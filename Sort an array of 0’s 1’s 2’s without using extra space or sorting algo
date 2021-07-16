@@ -1,0 +1,75 @@
+Example 1:
+
+Input: nums = [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+
+// first way
+// Time Complexity : O(n) + O(n) = O(n) (two times traversing array)
+// Space complexity : O(1)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void sort012(vector<int>& nums)
+{
+	int n = nums.size();
+	
+	// O(n)
+	// take 3 variables as C0, C1, C2 for counting 
+	int c0 = 0, c1 = 0, c2 = 0;
+	for(auto num : nums)
+	{
+		if(num == 0) ++c0;
+		else if(num == 1) ++c1;
+		else ++c2;
+	}
+	
+	// O(n)
+	while(--c0) cout << "0 ";
+	while(--c1) cout << "1 ";
+	while(--c2) cout << "2 ";
+}
+
+int main() {
+	vector<int> nums{2,0,2,1,1,0};
+	
+	sort012(nums);
+	
+	return 0;
+}
+
+
+// Optimal way
+// Time Complexity : O(n) (Single pass)
+// Space complexity : O(1)
+#include <bits/stdc++.h>
+using namespace std;
+
+void sort012(vector<int>& nums)
+{
+	int left = 0, right = nums.size()-1, mid = 0;
+	
+	while(mid <= right){
+		switch(nums[mid])
+		{
+			case 0 : swap(nums[left++], nums[mid++]);
+			break;
+			
+			case 1 : ++mid; 
+			break;
+			
+			case 2 : swap(nums[mid], nums[right--]);
+			break;
+		}
+	}
+	
+	for(auto n : nums) cout << n << " ";
+}
+
+int main() {
+	vector<int> nums{2,0,2,1,1,0};
+	
+	sort012(nums);
+	
+	return 0;
+}
