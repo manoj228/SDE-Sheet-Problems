@@ -51,9 +51,88 @@ Output: ar1[] = {1, 2, 3, 5, 8, 9}
 // we can reduce the space complexity by using gap method
 // Time complexity : O(nlogn)
 // space complexity : O(1)
+// { Driver Code Starts
+#include <bits/stdc++.h> 
+using namespace std; 
 
-  //O(n) - traversing arr1 
+
+ // } Driver Code Ends
+class Solution{
+    public:
+    
+    int checkFornextGap(int gap)
+    {
+        if(gap <= 1) return 0;
+        
+        return (gap / 2) + (gap % 2);
+    }
+    
+    void merge(long long arr1[], long long arr2[], int n, int m) { 
+       
+       // gap size should be size of n + m
+       int gap = m+n,i,j;
+       
+       // O(logn) - running loop upto gap reduces
+       for(gap = checkFornextGap(gap); gap > 0; gap = checkFornextGap(gap))
+       {
+           //O(n) - traversing arr1 
            for(i=0; i+gap < n; i++)
            {
                if(arr1[i] > arr1[i+gap]) swap(arr1[i], arr1[i+gap]);
            }
+           
+           //now travere in both arrays based on gap
+           for(j = gap > n ? gap - n : 0; i<n && j<m ; i++, j++)
+           {
+               if(arr1[i] > arr2[j]) swap(arr1[i], arr2[j]);
+           }
+           
+           if(j < m)
+           {
+             //O(n) - traversing arr2 
+           for(j=0; j+gap < m; j++)
+           {
+               if(arr2[j] > arr2[j+gap]) swap(arr2[j], arr2[j+gap]);
+           }
+           }
+       }
+    } 
+};
+
+// { Driver Code Starts.
+
+int main() 
+{ 
+	
+	int T;
+	cin >> T;
+	
+	while(T--){
+	    int n, m;
+	    cin >> n >> m;
+	    
+	    long long arr1[n], arr2[m];
+	    
+	    for(int i = 0;i<n;i++){
+	        cin >> arr1[i];
+	    }
+	    
+	    for(int i = 0;i<m;i++){
+	        cin >> arr2[i];
+	    }
+	    Solution ob;
+	    ob.merge(arr1, arr2, n, m); 
+
+        for (int i = 0; i < n; i++) 
+            cout<<arr1[i]<<" "; 
+        
+       
+	    for (int i = 0; i < m; i++) 
+		    cout<<arr2[i]<<" "; 
+	    
+	    cout<<endl;
+	}
+
+	return 0; 
+} 
+  // } Driver Code Ends
