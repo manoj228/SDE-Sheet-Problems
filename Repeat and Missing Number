@@ -104,8 +104,7 @@ int main() {
 // it is same time & space complexities as 2nd approach, but only dif is efficient use of numbers
 // Time complexity : O(n)
 // space complexity : O(1)
-// Time complexity : O(n)
-// space complexity : O(1)
+
 
 #include <bits/stdc++.h>
 using namespace std;
