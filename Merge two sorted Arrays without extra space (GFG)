@@ -51,12 +51,7 @@ Output: ar1[] = {1, 2, 3, 5, 8, 9}
 // we can reduce the space complexity by using gap method
 // Time complexity : O(nlogn)
 // space complexity : O(1)
-// { Driver Code Starts
-#include <bits/stdc++.h> 
-using namespace std; 
 
-
- // } Driver Code Ends
 class Solution{
     public:
     
