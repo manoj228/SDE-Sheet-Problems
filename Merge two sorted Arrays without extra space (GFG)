@@ -1,0 +1,59 @@
+Input: ar1[] = {10};
+       ar2[] = {2, 3};
+Output: ar1[] = {2}
+        ar2[] = {3, 10}  
+
+Input: ar1[] = {1, 5, 9, 10, 15, 20};
+       ar2[] = {2, 3, 8, 13};
+Output: ar1[] = {1, 2, 3, 5, 8, 9}
+        ar2[] = {10, 13, 15, 20}
+        
+ 
+ 1)
+ // first approach
+ // time complexity : O((m+n)log(m+n)) [ equal to :O(n) + O(m) + O(log(m+n)) + O(n) + O(m) ]
+ // space complexity :O(m+n)
+ 
+ class Solution{
+    public:
+        //Function to merge the arrays.
+        void merge(long long arr1[], long long arr2[], int n, int m) 
+        { 
+            // code here 
+              // take one array of size n+m
+    long long outputArr[n+m], k = 0;
+    
+    //O(n) - for storing arr1 in outputArr
+    for(int i=0; i<n; i++) 
+    outputArr[k++] = arr1[i];
+    
+     //O(m) - for storing arr2 in outputArr
+    for(int i=0; i<m; i++)
+    outputArr[k++] = arr2[i];
+    
+    // O(logn) for sorting outputArr
+    sort(outputArr, outputArr+n+m);
+    
+    k = 0;
+    //O(n) - for replacing arr1 with sorted outputArr
+    for(int i=0; i<n; i++) 
+    arr1[i] = outputArr[k++];
+    
+     //O(m) - for replacing arr1 with sorted outputArr
+    for(int i=0; i<m; i++)
+    arr2[i] = outputArr[k++];
+    } 
+};
+
+
+2) 
+// second approach 
+// we can reduce the space complexity by using gap method
+// Time complexity : O(nlogn)
+// space complexity : O(1)
+
+  //O(n) - traversing arr1 
+           for(i=0; i+gap < n; i++)
+           {
+               if(arr1[i] > arr1[i+gap]) swap(arr1[i], arr1[i+gap]);
+           }
