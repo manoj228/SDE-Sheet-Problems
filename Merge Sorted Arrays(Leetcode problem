@@ -1,0 +1,104 @@
+Example 1:
+
+Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+Output: [1,2,2,3,5,6]
+Explanation: The arrays we are merging are [1,2,3] and [2,5,6].
+The result of the merge is [1,2,2,3,5,6] with the underlined elements coming from nums1.
+Example 2:
+
+Input: nums1 = [1], m = 1, nums2 = [], n = 0
+Output: [1]
+Explanation: The arrays we are merging are [1] and [].
+The result of the merge is [1].
+Example 3:
+
+Input: nums1 = [0], m = 0, nums2 = [1], n = 1
+Output: [1]
+Explanation: The arrays we are merging are [] and [1].
+The result of the merge is [1].
+Note that because m = 0, there are no elements in nums1. The 0 is only there to ensure the merge result can fit in nums1.
+
+
+1) 
+// Brute Force Solultion
+// just replace 0's with nums2 values in nums1 and sort the array
+//Time complexity : O((m+n)log(m+n))
+//Space complexity : O(1)  
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+
+        // O(n) for traversal
+        for(int i=0; i<n; i++)
+        nums1[m++] = nums2[i] ;    
+               
+        // O(logn) for sorting
+        sort(nums1.begin(), nums1.end());
+    }
+};
+
+
+2) 
+// two pointer approach
+// start traversing from end 
+// compare and take the num which is smaller
+
+// Time complexity : O(m+n)
+// Space complexity : O(1)
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {    
+        
+        // taking two pointers
+        // i - starts from nums1 end 
+        // j - starts from nums2 end
+        // k - starts from value which we have to compare
+        int i = m-1 , j = n-1 , k = m+n-1;
+        
+        // O(m) + O(n)
+        while(i >= 0 && j >= 0)
+        {
+            if(nums1[i] > nums2[j])
+                nums1[k--] = nums1[i--];
+            
+            else
+                nums1[k--] = nums2[j--];
+        }
+        
+        // O(n) - traversing for remaining values in nums2
+        while(j >= 0) nums1[k--] = nums2[j--];
+    }
+};
+
+3) 
+// Most optimal solution : third approach which is most similar to 2nd approach but only change in if statement inside while loop
+// because of that, we can reduce second while loop
+// Time complexity : O(n)
+// Space complexity : O(1)
+
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {    
+        
+        // taking two pointers
+        // i - starts from nums1 end 
+        // j - starts from nums2 end
+        // k - starts from value which we have to compare
+        int i = m-1 , j = n-1 , k = m+n-1;
+        
+        // O(n)
+        while(j >= 0)
+        {
+            // as we are taking only greater value, so if we are take num1 then we need to check whether i is within the range
+            // it reduces the loop
+            if(i >= 0 && nums1[i] > nums2[j])
+                nums1[k--] = nums1[i--];
+            
+            else
+                nums1[k--] = nums2[j--];
+        }
+        
+        // skips the loop
+        //while(j >= 0) nums1[k--] = nums2[j--];
+    }
+};
