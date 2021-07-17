@@ -11,6 +11,7 @@ Output: Missing = 5, Repeating = 1
 // There are many ways to solve this problem
 // First Solution
 
+1) 
 //Time complexity : O(nlogn)
 //space complexity :O(1)
 
@@ -50,6 +51,7 @@ int main() {
 }
 
 
+2) 
 // Time complexity : O(n)
 // space complexity : O(1)
 
@@ -96,3 +98,70 @@ int main() {
 	
 	return 0;
 }
+
+
+3)
+// it is same time & space complexities as 2nd approach, but only dif is efficient use of numbers
+// Time complexity : O(n)
+// space complexity : O(1)
+// Time complexity : O(n)
+// space complexity : O(1)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void findRepeatandMissing(int arr[], int n)
+{
+   // 1) O(n) - take xor for all array values
+   int Xor = arr[0];
+   for(int i=1; i<n; i++)  Xor ^= arr[i];
+   
+    //2)  O(n) - take xor for 1 ... n
+   for(int i=1; i<=n; i++) Xor ^= i;
+   
+   // now take right most bit of xor result
+   int RMB = Xor & ~(Xor - 1);
+   
+   int x = 0, y = 0;
+   
+   // 3) O(n)
+   // now check all array values if right most bit is set, then do xor with x
+   // else do xor with y
+   for(int i=0; i<n; i++)
+   {
+   	if(RMB & arr[i]) x ^= arr[i];
+   	else y ^= arr[i];
+   }
+   
+   // 4) O(n)
+   // now repeat 3 step for value 1 .. n
+   for(int i=1; i<=n; i++)
+   {
+   	if(RMB & i) x ^= i;
+   	else y ^= i;
+   }    
+   
+   int rep, mis;
+   //5) final step ,traverse array to check which is repeating and missing number
+   for(int i=0; i<n; i++)
+   {
+   	if(arr[i] == x){ rep = x;}
+   	if(i+1 != y){ mis = y; }
+   }
+   
+   cout << "Repeating " << rep << " Missing " << mis << endl;
+}
+
+int main() {
+	// your code goes here
+	int arr[] =  {3, 1, 3};
+	
+	int n = sizeof(arr)/ sizeof(arr[0]);
+	
+	
+	findRepeatandMissing(arr, n);
+	
+	return 0;
+}
+
+
