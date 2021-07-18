@@ -16,7 +16,7 @@ Output: 2
 1) // brute force solution
 // sort the array , traverse and check if is > n/2
 
-// Time complexity : O(nlogn)
+// Time complexity : O(n*n)
 // space complexity : O(1)
 
 2) // second approach is better than previous
