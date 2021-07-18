@@ -1,0 +1,79 @@
+Example 1:
+Input: nums = [1,0,-1,0,-2,2], target = 0
+Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+
+Example 2:
+Input: nums = [2,2,2,2,2], target = 8
+Output: [[2,2,2,2]]
+
+
+1) // brute force solution
+// we can use 4 for loops and check if add of 4 values is equal to target
+// Time complexity : O(n * n * n * n) 
+// space complexity : O(1)
+
+
+2) // Solution is hashing
+
+// Time complexity : O((n*n)logn) 
+// space complexity : O(1)
+
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        
+        // O(nlogn)
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        if(n < 4) return {};
+        
+        vector<vector<int>> res;
+        
+        //O(n)
+        for(int i=0; i<n-3; i++)
+        {
+            int t1 = target - nums[i];
+            
+            // O(n)
+            for(int j=i+1; j<n-2; j++)
+            {
+                int t2 = t1 - nums[j];
+                int left = j+1, right = n-1;
+                
+                // O(logn) - binary search
+                while(left < right)
+                {
+                    if(nums[left] + nums[right] == t2){
+                        vector<int> temp;                        
+                        
+                        temp.push_back(nums[i]);
+                        temp.push_back(nums[j]);
+                        temp.push_back(nums[left]);
+                        temp.push_back(nums[right]);
+                        
+                        res.push_back(temp);
+                        
+                           // skiping the repeating element
+                        while(left < right && nums[left] == temp[2]) ++left;
+                        
+                           // skiping the repeating element
+                        while(left < right && nums[right] == temp[3])
+                            --right;
+                    }
+                    
+                    else if(nums[left] + nums[right] < t2)
+                        left++;
+                    else if(nums[left] + nums[right] > t2)
+                        right--;
+                }
+                // skiping the repeating element
+                 while(j+1 < n && nums[j] == nums[j+1]) ++j;
+            }
+            
+               // skiping the repeating element
+          while(i+1 < n && nums[i] == nums[i+1]) ++i;
+        }
+        
+        return res;
+    }
+};
