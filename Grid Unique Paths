@@ -35,9 +35,9 @@ public:
     }
 };
 
-2) // optimal solution is using dp
-// Time complexity : O(n*n)
-// space complexity : O(n*n)
+2) // second solution is using dp
+// Time complexity : O(m*n)
+// space complexity : O(m*n)
 class Solution {
 public:
     
@@ -60,5 +60,28 @@ public:
         
         vector<vector<int>> dp(m+1, vector<int>(n+1, -1));
         return countUniquePaths(0,0,m,n,dp);
+    }
+};
+
+3) // optimal solution
+
+// formula m+n-2Cm-1 or m+n-2Cn-1
+// Time complexity : O(m-1) / O(n-1)
+// space complexity : O(1)
+class Solution {
+public:
+  
+    int uniquePaths(int m, int n) {
+        
+        double res = 1;
+        int N = m+n-2 , r = m-1;
+        
+        for(int i=1; i<=r; i++)
+        {
+            res = res * (N - r + i) / i;
+        }
+        
+        return (int)res;
+        
     }
 };
