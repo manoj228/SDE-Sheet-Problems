@@ -1,0 +1,76 @@
+Given an array nums of size n, return the majority element.
+
+The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+
+
+Example 1:
+
+Input: nums = [3,2,3]
+Output: 3
+Example 2:
+
+Input: nums = [2,2,1,1,1,2,2]
+Output: 2
+
+
+1) // brute force solution
+// sort the array , traverse and check if is > n/2
+
+// Time complexity : O(nlogn)
+// space complexity : O(1)
+
+2) // second approach is better than previous
+// take array or map , count the frequency of each element  - O(n)
+// traverse map , check if it is > n/2 - O(n)
+
+// Time complexity : O(n) 
+// space complexity : O(n)
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        unordered_map<int,int> mp;
+        int ans;
+        for(int i=0;i<nums.size();i++)
+        {
+            mp[nums[i]]++;
+
+             if(mp[nums[i]] > nums.size()/2 && nums[i] != i)
+             {
+                ans = nums[i];
+             }
+         }
+        return ans;
+    }
+};
+
+3) // optimal solution
+// Moore’s voting algorithm
+(it was worked , because, majority elements = minority elements)
+For eg: 7 7 5 5 2 , in this 7 occurs - 3, 5 occurs - 2, 2 occurs - 1
+So 7 -. 3 times = (2  times of 5 + 1 times of 2) get cancelled, finally we r taking the element which is not cancelled
+steps:
+Declare cnt, ele
+if(cnt == 0) ele = arr[i]
+if(ele == arr[i]) cnt++
+Else cnt--
+
+// Time complexity : O(n)
+// space complexity : O(1)
+
+ int majorityElement(vector<int>& nums) {
+       
+        int cnt = 0, ele = 0;
+        
+        // O(n)
+        for(auto num : nums)
+        {
+            if(cnt == 0) ele = num;
+            
+            if(ele == num) cnt++;
+            else cnt--;
+        }
+        
+        
+        return ele;
+    }
