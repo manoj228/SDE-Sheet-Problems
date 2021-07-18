@@ -1,0 +1,66 @@
+Example 1:
+
+Input: x = 2.00000, n = 10
+Output: 1024.00000
+Example 2:
+
+Input: x = 2.10000, n = 3
+Output: 9.26100
+Example 3:
+
+Input: x = 2.00000, n = -2
+Output: 0.25000
+Explanation: 2-2 = 1/22 = 1/4 = 0.25
+
+1) // Brute force solution
+// we can multiply x for n times and return it
+
+// Time complexity : O(n)
+// space complexity: O(1)
+
+2) // Optimal solution
+
+//steps
+// if n is even, we can multiply x * x and reduce by n/2
+// if n is odd, we can multiply ans * x and reduce n by 1
+// check if n is +ve or -ve
+
+// Time complexity : O(logn)
+// space complexity : O(1)
+
+class Solution {
+public:
+    double myPow(double x, int n) {
+        if(n == 0)
+            return 1;
+        
+        double ans = 1.0;
+        
+        // long long is to avoid overflow of -ve int
+        long long k = n;
+        
+        if(k < 0) k = -k;
+        
+        // O(logn)
+        while(k)
+        {
+            // odd
+            if(k & 1)
+            {
+                ans *= x;
+                k -= 1;
+            }
+            
+            // even
+            else
+            {
+                x *= x;
+                k /= 2;
+            }
+        }
+        
+        if(n < 0) return (double)1.0/(double)ans;
+        
+        return ans;
+    }
+};
