@@ -1,0 +1,47 @@
+Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
+
+Follow-up: Could you solve the problem in linear time and in O(1) space?
+
+ 
+
+Example 1:
+
+Input: nums = [3,2,3]
+Output: [3]
+Example 2:
+
+Input: nums = [1]
+Output: [1]
+
+1) // brute force solution
+// sort the array , traverse and check if is > n/3
+
+// Time complexity : O(n*n)
+// space complexity : O(1)
+
+2) // second approach is better than previous
+// take array or map , count the frequency of each element  - O(n)
+// traverse map , check if it is > n/2 - O(n)
+
+// Time complexity : O(n) 
+// space complexity : O(n)
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        unordered_map<int,int> mp;
+        int ans;
+        for(int i=0;i<nums.size();i++)
+        {
+            mp[nums[i]]++;
+
+             if(mp[nums[i]] > nums.size()/3 && nums[i] != i)
+             {
+                ans = nums[i];
+             }
+         }
+        return ans;
+    }
+};
+
+3) // optimal solution
