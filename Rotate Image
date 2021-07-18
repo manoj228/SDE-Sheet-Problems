@@ -1,0 +1,106 @@
+Example 1:
+Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+Output: [[7,4,1],[8,5,2],[9,6,3]]
+
+Example 2:
+Input: matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
+Output: [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
+
+
+1) // brute force solution
+// take another matrix 
+// 1) take first column from end , add it in first row  
+// 2) take second column , add it in second row
+
+// Time complexity : O(n*n)
+// space complexity : O(n*n)
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& a) {
+        
+       int row = a.size(), col = a[0].size(); 
+       vector<vector<int>> outputArr;
+       
+       // O(n*n)
+        for(int i=0; i<col ; i++)
+        {
+            vector<int> temp;
+            for(int j=row-1; j>=0; j--)
+            {
+                temp.push_back(a[j][i]);
+            }
+            outputArr.push_back(temp);
+        }
+        
+        for(int i=0; i<row; i++)
+        {
+            for(int j=0; j<col; j++)
+            {
+                a[i][j] = outputArr[i][j];
+            }
+        }
+    }
+};
+
+2) 
+// second approach is simple 
+
+//1) transpose the matrix
+//2) reverse every row
+
+// Time complexity : O(n*n) + O(n*n) = O(n*n)
+// space complexity : O(1)
+
+    void rotate(vector<vector<int>>& a) {
+        
+       int row = a.size(); 
+    
+        // O(n*n) 
+        for(int i=0; i<row; i++)
+        {
+            for(int j=i; j<row; j++)
+                swap(a[i][j], a[j][i]);
+        }
+        
+        // O(n*n) 
+        for(auto &r : a)
+            reverse(r.begin(), r.end());
+    }
+};
+
+3) // Third approach
+// just traversing the matrix rotating the values within single pass
+
+// Time complexity : O(n*n)
+// space complexity : O(1)
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& a) {
+        
+       int n = a.size(); 
+    
+        // O(n * n)
+       for(int i=0; i<n/2; i++)
+       {
+           for(int j=i; j < n-1-i; j++)
+           {
+               // take cur value as temp
+               int t = a[i][j];
+               
+               // update 1st corner
+               a[i][j] = a[n-1-j][i];
+               
+               // 2nd corner
+               a[n-1-j][i] = a[n-1-i][n-1-j];
+               
+               //3rd corner
+               a[n-1-i][n-1-j] = a[j][n-1-i];
+               
+               // final corner and so on.
+               a[j][n-1-i] = t;
+           }
+       }
+    }
+};
