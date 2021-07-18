@@ -45,3 +45,58 @@ public:
 };
 
 3) // optimal solution
+// Boyer moore voting algorithm
+Steps
+Declare c1,c2, n1, n2
+if(a[i] == n1) c1++;
+Else if(a[i] == n2) c2++;
+Else if(c1 == 0) c1 = 1, n1 = a[i];
+Else if(c12 == 0) c2 = 1, n2 = a[i]
+Else c1-- , c2--
+Then check freq for n1 and n2, which is > n/3 and print value accordingly
+// Time complexity : O(n) + O(n) = O(n)
+// space complexity : O(1)
+
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        
+        int c1 = 0 , c2 = 0, n1 = -1, n2 = -1, n = nums.size();
+        
+        // O(n)
+        for(auto num : nums)
+        {
+            // check it matches with cur element
+            if(num == n1) c1++;
+            
+            else if(num == n2) c2++;
+            
+            else if(c1 == 0) n1 = num, c1 = 1;
+            
+            else if(c2 == 0) n2 = num, c2 = 1;
+            
+            else 
+                c1--, c2--;
+               
+        }
+        
+        
+        // O(n) for checking more than n/3
+        c1 = 0, c2 = 0;
+        for(auto num : nums)
+        {
+            if(num == n1) c1++;
+            else if(num == n2) c2++;
+        }
+        
+        if(c1 > n/3 && c2 > n/3) return {n1, n2};
+        else if(c1 > n/3) return {n1};
+        else if(c2 > n/3) return {n2};
+        
+        return {};
+    }
+};
+
+
+
+
