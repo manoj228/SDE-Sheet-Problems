@@ -1,0 +1,64 @@
+Example 1:
+Input: m = 3, n = 7
+Output: 28
+Example 2:
+
+Input: m = 3, n = 2
+Output: 3
+Explanation:
+From the top-left corner, there are a total of 3 ways to reach the bottom-right corner:
+1. Right -> Down -> Down
+2. Down -> Down -> Right
+3. Down -> Right -> Down
+
+1) // Brute force solution
+// recursive call for all possible ways count it
+// time and space complexity will have exponential in nature
+class Solution {
+public:
+    
+    int countUniquePaths(int i,int j,int m,int n)
+    {
+        // check if we reached destination
+        if(i == m-1 && j == n-1) return 1;
+        
+        // handle out of bound
+        if(i >= m || j >= n) return 0;
+        
+        // recursive call for right and down paths
+        return countUniquePaths(i,j+1, m,n) + countUniquePaths(i+1, j, m, n);
+    }
+    
+    int uniquePaths(int m, int n) {
+        
+        return countUniquePaths(0,0,m,n);
+    }
+};
+
+2) // optimal solution is using dp
+// Time complexity : O(n*n)
+// space complexity : O(n*n)
+class Solution {
+public:
+    
+    int countUniquePaths(int i,int j,int m,int n,vector<vector<int>>& dp)
+    {
+        // check if we reached destination
+        if(i == m-1 && j == n-1) return 1;
+        
+        // handle out of bound
+        if(i >= m || j >= n) return 0;
+        
+        if(dp[i][j] != -1) return dp[i][j];
+        
+        // recursive call for right and down paths
+        return dp[i][j] = countUniquePaths(i,j+1, m,n,dp) + 
+                          countUniquePaths(i+1, j, m, n,dp);
+    }
+    
+    int uniquePaths(int m, int n) {
+        
+        vector<vector<int>> dp(m+1, vector<int>(n+1, -1));
+        return countUniquePaths(0,0,m,n,dp);
+    }
+};
