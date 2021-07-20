@@ -1,0 +1,53 @@
+Given an array of integers arr[] and a number m, count the number of subarrays having XOR of their elements as m.
+Examples: 
+
+Input : arr[] = {4, 2, 2, 6, 4}, m = 6
+Output : 4
+Explanation : The subarrays having XOR of 
+              their elements as 6 are {4, 2}, 
+              {4, 2, 2, 6, 4}, {2, 2, 6},
+               and {6}
+
+Input : arr[] = {5, 6, 7, 8, 9}, m = 5
+Output : 2
+Explanation : The subarrays having XOR of
+              their elements as 5 are {5}
+              and {5, 6, 7, 8, 9}
+              
+              
+1) // Brute force solution
+// we can use two for loops , iterate over all subarrays and calculate xor 
+// then update the result, only if it matches with given m
+
+// Time complexity : O(n * n)
+// space complexity  : O(1)
+
+
+2) // optimal solution is using hashing
+
+// time complexity : O(n logn)
+// space complexity : O(n)
+
+int Solution::solve(vector<int> &A, int B) {
+    
+    map<int,int> mp;
+    
+    int xorr = 0 , res = 0;
+    
+    // O (n log n)
+    for(auto ele : A)
+    {
+        // xor with each element
+        xorr ^= ele;
+        
+        // if it matches with res, increment
+        if(xorr == B) res++;
+        
+        // check if B^xorr is in map, then we need to add the freq also
+        if(mp.find(xorr ^ B) != mp.end()) res += mp[(xorr ^ B)];
+        
+        mp[xorr]++;
+    }
+    
+    return res;
+}
