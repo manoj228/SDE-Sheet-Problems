@@ -21,9 +21,9 @@ Explanation: The answer is "b", with the length of 1.
 // space complexity : O(1)
 
 
-2) // optimal solution is using hashing 
+2) // Second solution is using set 
 
-// Time complexity : O(nlogn)
+// Time complexity : O(n) + O(n) = O(2n)
 // space complexity : O(n)
 
 class Solution {
@@ -35,6 +35,7 @@ public:
     
 		while( i<n && j<n)
 		{
+		        // O(n) - for moving j
 			if(set.find(s[j]) == set.end()) //If the character does not in the set
 			{
 				set.insert(s[j++]); //Insert the character in set and update the j counter
@@ -42,6 +43,7 @@ public:
 			}
 			else
 			{
+			       // O(n) - for moving i
 				set.erase(s[i++]); 
 				/*If character does exist in the set, ie. it is a repeated character, 
 				we update the left side counter i, and continue with the checking for substring. */
@@ -49,5 +51,39 @@ public:
 		}
         
         return ans;
+    }
+};
+
+3) // Optimal solution is using hashing
+// Time complexity : O(n)
+// space complexity : O(n)
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        
+        //freq arr
+        vector<int> freq(256, -1);
+        
+        int l = 0 , r = 0 , n = s.length();
+        
+        int longLen = 0;
+        
+        for( ; r < n; r++)
+        {
+            // updating the left only if cur char is present in arr
+            if(freq[s[r]] != -1) l = max(freq[s[r]]+1, l);
+            
+            // updating freq
+            freq[s[r]] = r;
+            
+            //calculating the length
+            longLen = max(longLen, r - l + 1);
+        }
+        
+        
+        return longLen;
+        
+        
     }
 };
