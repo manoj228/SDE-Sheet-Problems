@@ -1,0 +1,54 @@
+Example 1:
+Input: head = [1,2,3,4,5], n = 2
+Output: [1,2,3,5]
+
+Example 2:
+Input: head = [1], n = 1
+Output: []
+
+Example 3:
+Input: head = [1,2], n = 1
+Output: [1]
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        
+        // create dummy node 
+        ListNode *dummy = new ListNode();
+        
+        // link with head
+        dummy -> next = head;
+        
+        // take fast pointer
+        ListNode *fast = dummy;
+        
+        // move upto n
+        for(int i=0; i<n; i++) fast = fast -> next;
+        
+        // take another pointer
+        ListNode *slow = dummy;
+        
+        // move both pointers at same time
+        // when fast -> next == NULL, then ur slow pointer reaches one step before the deleting node
+        while(fast-> next)
+        {
+            slow = slow -> next;
+            fast = fast -> next;
+        }
+        
+        // we can easily change the link
+        slow -> next = slow -> next -> next;
+        
+        // finally return head
+        return dummy -> next;
+    }
+};
