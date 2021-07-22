@@ -1,0 +1,62 @@
+Example 1:
+Input: head = [1,2,2,1]
+Output: true
+
+Example 2:
+Input: head = [1,2]
+Output: false
+ 
+ 
+ /**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    
+    ListNode *reverse(ListNode *t)
+    {
+        ListNode *next = NULL , *prev = NULL , *cur = t;
+        while(cur)
+        {
+            next = cur -> next;
+            cur -> next = prev;
+            prev = cur;
+            cur = next;
+        }
+        
+        return prev;
+    }
+    
+    bool isPalindrome(ListNode* head) {
+        
+        if(head == NULL)
+            return true;
+        
+        ListNode *fast = head , *slow = head;
+        
+        while(fast && fast -> next)
+        {
+            slow = slow -> next;
+            fast = fast -> next -> next;
+        }
+        
+        fast = head ;
+        slow = reverse(slow);
+        
+        while(slow)
+        {
+            if(slow->val != fast->val)
+                return 0;
+            
+            slow = slow->next;
+            fast = fast->next;
+        }
+        
+        return true;
+    }
+};
