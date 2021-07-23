@@ -1,0 +1,54 @@
+Input: arr[]   = {3, 0, 2, 0, 4}
+Output: 7
+
+1) // Brute force solution
+// we can check for left and right maximum element for every i
+// then subtract with cur ele and add it to result
+
+// time complexity : O(n*n)
+// space complexity : O(1)
+
+2) // Improved solution
+// we can use two arrays as left and right which will store the maximum from left and maximum from right
+// then iterate each element , find min of these left and right and subtract with cur element , then add it to result
+
+// time complexity : O(n)
+// space complexity : O(n)
+
+3) // To reduce space complexity we can use two pointer technique
+
+// time complexity : O(n)
+// space complexity : O(1)
+class Solution {
+public:
+    int trap(vector<int>& A) {
+        int n = A.size();
+        
+        // two pointers to traverse
+        int left=0; int right=n-1;
+        
+        // final result
+        int res=0;
+        // variable to store maximum left and right
+        int maxleft=0, maxright=0;
+        while(left<=right){
+            if(A[left] <= A[right]){
+                // check for maximum from left
+                if(A[left] >= maxleft) maxleft = A[left];
+                
+                // else we need to subtract with cur ele and add it to result
+                else res += maxleft-A[left];
+                left++;
+            }
+            else{
+                // check for maximum from right
+                if(A[right] >= maxright) maxright = A[right];
+                
+                        // else we need to subtract with cur ele and add it to result
+                else res += maxright-A[right];
+                right--;
+            }
+        }
+        return res;
+    }
+};
