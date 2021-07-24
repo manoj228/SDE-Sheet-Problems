@@ -1,0 +1,89 @@
+Examples: 
+Input: arr[] = {9:00, 9:40, 9:50, 11:00, 15:00, 18:00} 
+dep[] = {9:10, 12:00, 11:20, 11:30, 19:00, 20:00} 
+Output: 3 
+Explanation: There are at-most three trains at a time (time between 11:00 to 11:20)
+
+Input: arr[] = {9:00, 9:40} 
+dep[] = {9:10, 12:00} 
+Output: 1 
+Explanation: Only one platform is needed. 
+
+1) // Brute force solution
+// we can use two loops and check for every i and update the result
+
+// Time complexity : O(n*n)
+// Space complexity : O(1)
+
+2) // use greedy method
+// sort the arr and dep
+// check if dep < arr , then reduce platform needed
+// else increment the platform needed and update the result
+
+// Time complexity : O(n logn)
+// space complexity : O(1)
+
+// { Driver Code Starts
+// Program to find minimum number of platforms
+// required on a railway station
+#include <bits/stdc++.h>
+using namespace std;
+
+
+ // } Driver Code Ends
+class Solution{
+    public:
+    int findPlatform(int arr[], int dep[], int n)
+    {
+        // O (logn)
+    	sort(arr, arr+n);
+    	sort(dep, dep+n);
+    	
+    	int i = 1, j = 0;
+    	int platForm = 1, maxRes = 0;
+    	
+    	// O (n)
+    	while(i < n)
+    	{
+    	    // if dep is less than next arrival, then reduce the platform needed
+    	    if(dep[j] < arr[i])
+    	    {
+    	        platForm--, j++;
+    	    }
+    	    // if dep is greater than next arrival, then increase the platform needed
+    	    else if(dep[j] >= arr[i])
+    	    {
+    	        platForm++, i++;
+    	    }
+    	    
+    	    // update the maxRes;
+    	    maxRes = max(maxRes, platForm);
+    	}
+    	
+    	return maxRes;
+    }
+};
+
+
+// { Driver Code Starts.
+// Driver code
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--) 
+    {
+        int n;
+        cin>>n;
+        int arr[n];
+        int dep[n];
+        for(int i=0;i<n;i++)
+            cin>>arr[i];
+        for(int j=0;j<n;j++){
+            cin>>dep[j];
+        }
+        Solution ob;
+        cout <<ob.findPlatform(arr, dep, n)<<endl;
+    } 
+   return 0;
+}  // } Driver Code Ends
