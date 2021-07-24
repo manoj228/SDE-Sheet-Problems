@@ -1,0 +1,44 @@
+Example 1:
+Input: nums = [1,1,2]
+Output: 2, nums = [1,2,_]
+Explanation: Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+
+Example 2:
+Input: nums = [0,0,1,1,1,2,2,3,3,4]
+Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
+Explanation: Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+
+1) // Brute force solution
+// we can use two for loops and count the unique and return it
+
+//Time complexity : O(n * n)
+// space complexity : O(1)
+
+2) // Better solution, we can use set for storing unique elements and return the size of the set and replace the unique element with given input
+
+// Time complexity : O(n + nlogn)
+// space complexity : O(n)
+
+3) // optimal solution is two pointer technique
+
+// Time complexity : O(n)
+// space complexity : O(1)
+
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        
+        // pointer to denote no of unique elements
+        int pos = 0;
+
+     for (int i = 0; i < nums.size(); ++i) {
+         // increment the pointer and store the unique element
+        if (i == 0 || nums[i] != nums[pos - 1])
+            nums[pos++] = nums[i];
+    }
+
+    return pos;
+    }
+};
