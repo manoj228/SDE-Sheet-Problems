@@ -1,0 +1,60 @@
+Example 1:
+
+Input: candidates = [10,1,2,7,6,1,5], target = 8
+Output: 
+[
+[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]
+]
+Example 2:
+
+Input: candidates = [2,5,2,1,2], target = 5
+Output: 
+[
+[1,2,2],
+[5]
+]
+
+// we can use recursive solution
+class Solution {
+public:
+    void call(vector<int> &nums, int target, int ind, vector<int> &temp,
+              vector<vector<int>> &res)
+    {
+        // if target is zero
+        if(target == 0){
+            res.push_back(temp);
+            return;
+        }
+        
+        // traverse all the possible combination
+        for(int i=ind; i<nums.size() && target >= nums[i]; i++)
+        {
+            // skip if its duplicate element
+            if(i != ind && nums[i] == nums[i-1]) continue;
+            
+            temp.push_back(nums[i]);
+            
+            //recursive call for next iteration
+            call(nums, target-nums[i], i+1, temp, res);
+            
+            temp.pop_back();
+        }
+    }
+    
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        
+        // sort the array 
+        // it is useful to delete the duplicates
+        sort(candidates.begin(), candidates.end());
+        
+        vector<vector<int>> res;
+        vector<int> temp;
+        
+        call(candidates, target, 0, temp, res);
+        
+        return res;
+    }
+};
