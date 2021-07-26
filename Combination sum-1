@@ -1,0 +1,84 @@
+Example 1:
+
+Input: candidates = [2,3,6,7], target = 7
+Output: [[2,2,3],[7]]
+Explanation:
+2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.
+7 is a candidate, and 7 = 7.
+These are the only two combinations.
+
+Example 2:
+
+Input: candidates = [2,3,5], target = 8
+Output: [[2,2,2,2],[2,3,3],[3,5]]
+
+Example 3:
+
+Input: candidates = [2], target = 1
+Output: []
+
+Example 4:
+
+Input: candidates = [1], target = 1
+Output: [[1]]
+
+Example 5:
+
+Input: candidates = [1], target = 2
+Output: [[1,1]]
+
+1) // Brute force solution
+// we can use three for loops and check for all the possible sum = target and print the result
+
+//Time complexity : O(n*n*n)
+// space complexity : O(n*n)
+
+2) // optimal solution is using recursion
+// we have two options , if target >= cur element, then we can pick ; else we don't take
+
+// time complexity : exponential in nature { i.e O(pow(2*t) * n) , t -> represent combination for each no}
+// space complexity : dependent on no of combination
+
+class Solution {
+public:
+    
+    void check(vector<int> &arr,int ind,int target, vector<int> &temp,
+               vector<vector<int>> &res)
+    {
+        // check if it reaches
+        if(ind == arr.size())
+        {    
+            //check if target is zero 
+            if(target == 0) res.push_back(temp);
+            return;
+        }
+      
+        
+        // we are taking the cur element
+        if(target >= arr[ind])
+        {
+            temp.push_back(arr[ind]);
+            
+            //reduce the target
+            check(arr, ind, target - arr[ind], temp, res);
+            
+            // deleting the last picked element for other combinations
+            temp.pop_back();
+        }
+        
+        
+        // if not picking, increment the index
+        check(arr, ind+1, target, temp, res);
+            
+    }
+    
+    
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> res;
+        vector<int> temp;
+        
+        check(candidates, 0, target, temp, res);
+                
+        return res;
+    }
+};
