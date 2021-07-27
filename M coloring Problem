@@ -1,0 +1,61 @@
+Given an undirected graph and an integer M. The task is to determineif the graph can be colored with at most M colors such that no two adjacent vertices of the graph are colored with the same color. 
+Here coloring of a graph means the assignment of colors to all vertices. Print 1 if it is possible to colour vertices and 0 otherwise.
+
+Example 1:
+
+Input:
+N = 4
+M = 3
+E = 5
+Edges[] = {(1,2),(2,3),(3,4),(4,1),(1,3)}
+Output: 1
+Explanation: It is possible to colour the
+given graph using 3 colours.
+Example 2:
+
+Input:
+N = 3
+M = 2
+E = 3
+Edges[] = {(1,2),(2,3),(1,3)}
+Output: 0
+
+bool isSafe(bool graph[101][101], int N, int node, int color[],int curColor)
+{
+    for(int i=0; i<N; i++)
+    {
+        if(i != node && graph[i][node] == 1 && color[i] == curColor) 
+        return false;
+    }
+    
+    return true;
+}
+
+bool solve(bool graph[101][101], int m,int N,int node, int color[])
+{
+    if(node == N)  return true;
+    
+    for(int i = 1; i<=m; i++)
+    {
+        if(isSafe(graph,N,node,color, i))
+        {
+            color[node] = i;
+            
+            if(solve(graph, m, N, node+1, color)) return true;
+            
+            color[node] = 0;
+        }
+    }
+    
+    
+    return false;
+}
+
+bool graphColoring(bool graph[101][101], int m, int N)
+{
+    int color[N] = {0};
+    
+    if(solve(graph,m,N,0,color)) return true;
+    
+    return false;
+}
