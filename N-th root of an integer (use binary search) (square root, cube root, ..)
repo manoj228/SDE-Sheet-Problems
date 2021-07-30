@@ -1,0 +1,43 @@
+Example 1:
+
+Input: n = 2, m = 9
+Output: 3
+Explanation: 32 = 9
+Example 2:
+
+Input: n = 3, m = 9
+Output: -1
+Explanation: 3rd root of 9 is not
+integer.
+
+
+class Solution{
+	public:
+	double multiply(double number, int n) {
+    double ans = 1.0;
+    for(int i = 1;i<=n;i++) {
+        ans = ans * number;
+    }
+    return ans; 
+}
+
+	int NthRoot(int n, int m)
+	{
+	    double low = 1;
+    double high = m;
+    double eps = 1e-6; 
+    
+    while((high - low) > eps) {
+        double mid = (low + high) / 2.0; 
+        if(multiply(mid, n) < m) {
+            low = mid; 
+        }
+        else {
+            high = mid; 
+        }
+    }
+	
+	       
+	       return low;
+	}  
+};
