@@ -1,0 +1,82 @@
+Example
+Input:
+
+1
+5 3
+1
+2
+8
+4
+9
+Output:
+
+3
+Output details:
+
+FJ can put his 3 cows in the stalls at positions 1, 4 and 8,
+resulting in a minimum distance of 3.
+
+// Time complexity  : O(n + log(a[n-1] - a[0))
+//space complexity : O(1)
+#include <bits/stdc++.h>
+using namespace std;
+
+bool allocationPossible(vector<int> &a,int k,int dist)
+{
+    int cnt = 1,  place = a[0];
+    
+    for(int i=1; i<a.size(); i++)
+    {
+        if(a[i] - place >= dist)
+        {
+            cnt++;
+            
+            if(cnt == k) return true;
+            
+            place = a[i];
+        }        
+       
+    }
+    
+    return false;
+}
+
+int aggressiveCows(vector<int> &stalls, int k)
+{
+    sort(stalls.begin(), stalls.end());
+    int n = stalls.size();
+    int low = 1, high = stalls[n-1] - stalls[0], res = INT_MAX;
+    
+    while(low <= high)
+    {
+        int mid = (low + high) >> 1;
+        
+        if(allocationPossible(stalls,k, mid))
+        {
+            res = mid;
+            low = mid + 1;
+        }
+        else
+        high = mid - 1;
+    }
+    
+    return res;
+}
+
+int main() {
+    int t;
+    cin >> t;
+    
+    while(t--)
+    {
+    	int n , k;
+    	cin >> n >> k;
+    	
+    	vector<int> a(n);
+    	for(int i=0; i<n; i++) cin >> a[i];
+    	
+    	cout << aggressiveCows(a,k) << endl;
+    }
+    
+	return 0;
+}
