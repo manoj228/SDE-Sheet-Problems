@@ -1,0 +1,64 @@
+Popped element is 10
+Top element in Queue : 20
+Queue elements are : 20 30 40 50 
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Queue
+{
+	public : 
+	vector<int> arr;
+	int cap;
+
+	Queue(int n) { cap = n;  }
+	
+	void push(int val)
+	{
+		if(arr.size() >= cap) cout << "Queue overflow";
+		else
+			arr.push_back(val);
+	}
+	
+	int pop()
+	{
+		if(arr.size() <= 0){ cout << "Queue underflow"; return 0;}
+		else
+		{
+			int  val = arr.front();
+			arr.erase(arr.begin());
+			return val;
+		}
+	}
+	
+	int peek()
+	{
+		if(arr.size() <= 0){ cout << "Queue underflow"; return 0;}
+		else
+		return arr.front();
+	}
+	
+	bool isEmpty()
+	{
+		return (arr.size() == 0);
+	}
+};
+
+int main() {
+	class Queue s(10);
+	s.push(10);
+	s.push(20);
+	cout << "Popped element is " << s.pop() << endl;
+	s.push(30);
+	s.push(40);
+	s.push(50);
+	
+	cout << "Top element in Queue : " << s.peek() << endl;
+	cout << "Queue elements are : ";
+	while(!s.isEmpty())
+	{
+		cout << s.pop() << " ";
+	}
+
+	return 0;
+}
