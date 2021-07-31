@@ -1,0 +1,75 @@
+You are given a sorted array consisting of only integers where every element appears exactly twice, except for one element which appears exactly once. 
+Find this single element that appears only once.
+Follow up: Your solution should run in O(log n) time and O(1) space.
+ 
+
+Example 1:
+Input: nums = [1,1,2,3,3,4,4,8,8]
+Output: 2
+
+Example 2:
+Input: nums = [3,3,7,7,10,11,11]
+Output: 10
+ 
+ 1) //Brute force solution
+ 
+// we can use two for loops and counter 
+// increment the counter,if we found same value as cur value and then update maxCounter and then return it
+
+//Time complexity : O(n*n)
+// space complexity:O(1)
+
+2) // better solution is using hashing
+// we can traverse the array and count the frequency of each element - O(n)
+// then traverse the map and look for count 1 and return it - O(n)
+
+//Time complexity : O(n) + O(n) = O(2n)
+// space complexity:O(n)
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+       
+        map<int,int> mp;
+        //O(n)
+        for(int i=0; i<nums.size(); i++){
+            mp[nums[i]]++;
+        }
+        
+        //O(n)
+        for(int i=0; i<nums.size(); i++)
+        {
+            if(mp[nums[i]] ==1)
+                return nums[i];
+        }
+        
+        return 0;
+    }
+};
+
+3) // optimal solution is using binary search
+//Time complexity : O(logn)
+// space complexity : O(1)
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        int l = 0, r = nums.size()-1;
+        
+        while(l < r)
+        {
+            int mid = l + (r-l) / 2;
+            // check for pattern
+            // if we at even position, then its corresponding pair must be in odd 
+            // if we at odd position, then its corresponding pair must be in even
+            // for eg: 1 1 2 2 [arr]
+            //         0 1 2 3[index]
+            if((mid & 1 && nums[mid] == nums[mid-1]) || 
+               (mid % 2 == 0 && nums[mid] == nums[mid+1]))
+                l = mid+1;
+            
+            else
+                r = mid;
+        }
+        
+        return nums[l];
+    }
+};
