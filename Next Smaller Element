@@ -1,0 +1,57 @@
+ For the input array [4, 8, 5, 2, 25}, the next smaller elements for each element are as follows.
+
+Element       NSE
+   4      -->   2
+   8      -->   5
+   5      -->   2
+   2      -->   -1
+   25     -->   -1
+   
+
+For the input array [13, 7, 6, 12}, the next smaller elements for each element are as follows.  
+
+  Element        NSE
+   13      -->    7
+   7       -->    6
+   6       -->    -1
+   12     -->     -1
+   
+   
+ // Time complexity : O(n) + O(n)
+ // space complexity : O(n) + O(n)
+   
+ #include <bits/stdc++.h>
+using namespace std;
+
+vector<int> nextSmallerElement(vector<int> nums)
+{
+	vector<int> res(nums.size());
+	stack<int> st;
+	
+	for(int i=nums.size()-1; i>=0; i--)
+	{
+		while(!st.empty() && st.top() >= nums[i]) st.pop();
+		
+		if(!st.empty()) 
+		res[i] = st.top();
+		else
+		res[i] = -1;
+		
+		st.push(nums[i]);
+	}
+	
+	return res;
+}
+
+int main() {
+	// your code goes here
+	
+	vector<int> nums{4, 8, 5, 2, 25};
+	
+	vector<int> res = nextSmallerElement(nums);
+	
+	for(auto v : res)
+	cout << v << " ";
+	
+	return 0;
+}
