@@ -1,0 +1,19 @@
+For Push operation based using two stacks:
+// time complexity : O(n)
+// space complexity : O(2n)
+Steps:
+push(x) :
+-> insert s1 into s2
+-> insert x into s1
+-> insert s2 into s1
+pop():
+-> s1.pop()
+
+For Pop operation based using two stacks:
+// time complexity : O(1)
+// space complexity : O(n) or O(1) amortised time
+Steps:
+-> push(x) : insert into s1
+pop() :
+-> if(!s2.empty()) s2.pop();
+-> else insert s1 into s2 , s2.pop()
