@@ -1,0 +1,40 @@
+Using two queues:
+Steps :
+For push(x) :
+Insert x into q2
+Take all elements of q1 and insert to q2
+Swap q1 and q2
+For pop():
+Pop q1 elements
+
+pseudo code :
+push(x) :
+q2.push(x)
+
+while(!q1.empty() 
+{ q2.push(q1.front()); q2.pop(); }
+
+swap(q1,q2);
+
+pop() :
+q1.pop()
+
+top() :
+return q1.front();
+
+Using single queue :
+Steps:
+push(x) :
+Insert x into q
+Pop the first element and push again into queue upto q.size() - 1
+
+push(x) : 
+q.push(x)
+for(int i=0; i<q.size()-1; i++)
+{
+q.push(q.front()) q.pop()
+}
+
+pop() : q.pop()
+
+top() : return q.front()
