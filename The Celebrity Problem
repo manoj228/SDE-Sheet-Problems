@@ -1,0 +1,112 @@
+In a party of N people, only one person is known to everyone. Such a person may be present in the party, if yes, (s)he doesn’t know anyone in the party. We can only ask questions like “does A know B? “. Find the stranger (celebrity) in the minimum number of questions.
+We can describe the problem input as an array of numbers/characters representing persons in the party. We also have a hypothetical function HaveAcquaintance(A, B) which returns true if A knows B, false otherwise. How can we solve the problem. 
+
+Examples:  
+
+Input:
+MATRIX = { {0, 0, 1, 0},
+           {0, 0, 1, 0},
+           {0, 0, 0, 0},
+           {0, 0, 1, 0} }
+Output:id = 2
+Explanation: The person with ID 2 does not 
+know anyone but everyone knows him
+
+Input:
+MATRIX = { {0, 0, 1, 0},
+           {0, 0, 1, 0},
+           {0, 1, 0, 0},
+           {0, 0, 1, 0} }
+Output: No celebrity
+Explanation: There is no celebrity.
+
+1) Brute force solution
+
+// Time complexity : O(n*n)
+// space complexity : O(n+n)
+This uses Graph to arrive at the particular solution.
+
+Approach: 
+Model the solution using graphs. 
+Initialize indegree and outdegree of every vertex as 0. If A knows B, draw a directed edge from A to B, increase indegree of B and outdegree of A by 1. 
+Construct all possible edges of the graph for every possible pair [i, j]. 
+There are NC2 pairs. If a celebrity is present in the party, there will be one sink node in the graph with outdegree of zero and indegree of N-1. 
+
+steps:
+Create two arrays indegree and outdegree, to store the indegree and outdegree
+Run a nested loop, the outer loop from 0 to n and inner loop from 0 to n.
+For every pair i, j check if i knows j then increase the outdegree of i and indegree of j
+For every pair i, j check if j knows i then increase the outdegree of j and indegree of i
+Run a loop from 0 to n and find the id where the indegree is n-1 and outdegree is 0
+
+2) Better solution
+
+// Time complexity : O(n)
+// space complexity : O(1)
+class Solution 
+{
+    public:
+    int celebrity(vector<vector<int> >& M, int n) 
+    {
+        // two pointer approach
+        int i = 0, j = n-1;
+        
+        while(i < j)
+        {
+            // if i don't know j
+            if(M[i][j] == 0)
+            j--;
+            
+            // i knows j
+            else
+            i++;
+        }
+        
+        int celebrity = i; // check if i is the celebrity or not
+        
+        for(int i=0; i<n; i++)
+        {
+            // if i doen't know celebrity  or
+            // celebrity knows the i , return -1
+            if(i != celebrity && M[i][celebrity] == 0 || M[celebrity][i] == 1)
+            return -1;
+        }
+        
+        return celebrity;
+    }
+};
+// Two pointer approach
+// Time complexity : O(n)
+// space complexity : O(1)
+class Solution 
+{
+    public:
+    int celebrity(vector<vector<int> >& M, int n) 
+    {
+        // two pointer approach
+        int i = 0, j = n-1;
+        
+        while(i < j)
+        {
+            // if i don't know j
+            if(M[i][j] == 0)
+            j--;
+            
+            // i knows j
+            else
+            i++;
+        }
+        
+        int celebrity = i; // check if i is the celebrity or not
+        
+        for(int i=0; i<n; i++)
+        {
+            // if i doen't know celebrity  or
+            // celebrity knows the i , return -1
+            if(i != celebrity && M[i][celebrity] == 0 || M[celebrity][i] == 1)
+            return -1;
+        }
+        
+        return celebrity;
+    }
+};
