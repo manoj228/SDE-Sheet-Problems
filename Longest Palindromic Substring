@@ -1,0 +1,69 @@
+Given a string s, return the longest palindromic substring in s. 
+
+Example 1:
+
+Input: s = "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+
+Example 2:
+
+Input: s = "cbbd"
+Output: "bb"
+
+Example 3:
+
+Input: s = "a"
+Output: "a"
+
+Example 4:
+
+Input: s = "ac"
+Output: "a"
+
+
+// Time complexity : O(n)
+// Space complexity : O(1)
+class Solution {
+public:
+    
+    string longestPalindrome(string s) {
+        if( s.empty() || s.size()==1 || ( s.size()==2 && s[0]==s[1] ) ) 
+            return s;
+        
+        int start = 0 , end = 1 , n = s.size();
+        // O(n)
+        for(int i=1; i<n; i++)
+        {
+            int left = i-1 , right = i;
+            // for even length palindrome
+            while(left >= 0 && right < n && s[left] == s[right])
+            {
+                // update length
+                if(end < right - left + 1)
+                {
+                    start = left;
+                    end = right - left + 1;
+                }
+                left--, right++;
+            }
+            
+               left = i-1 , right = i+1;
+            // for odd length palindrome
+            while(left >= 0 && right < n && s[left] == s[right])
+            {
+                if(end < right - left + 1)
+                {
+                    start = left;
+                    end = right - left + 1;
+                }
+                left--, right++;
+            }
+            
+        }
+        string res = "";
+        for(int i = start; i<start+end; i++) res += s[i];
+        
+        return res;
+    }
+};
