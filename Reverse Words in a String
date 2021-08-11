@@ -1,0 +1,89 @@
+Given an input string s, reverse the order of the words.
+
+A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+
+Return a string of the words in reverse order concatenated by a single space.
+
+Note that s may contain leading or trailing spaces or multiple spaces between two words. 
+The returned string should only have a single space separating the words. Do not include any extra spaces.
+
+ 
+
+Example 1:
+
+Input: s = "the sky is blue"
+Output: "blue is sky the"
+Example 2:
+
+Input: s = "  hello world  "
+Output: "world hello"
+Explanation: Your reversed string should not contain leading or trailing spaces.
+Example 3:
+
+Input: s = "a good   example"
+Output: "example good a"
+Explanation: You need to reduce multiple spaces between two words to a single space in the reversed string.
+Example 4:
+
+Input: s = "  Bob    Loves  Alice   "
+Output: "Alice Loves Bob"
+
+1) first solution 
+
+take str as temprary string and store it in res only if its size is more than 0
+
+// Time complexity : O(n + n)
+// space complexity : O(1)
+
+class Solution {
+public:
+    string reverseWords(string s) {
+        int n = s.length();
+        
+        string res = "", str = "";
+        for(int i=n-1; i>=0; i--)
+        {
+            if(s[i] == ' ' && str.length() > 0)
+            {
+                reverse(str.begin(), str.end());
+                res += str;
+                str.clear();
+                 res += " ";
+            }
+            
+            else if(s[i] != ' ') str += s[i];
+        }
+        if(str.length() > 0){
+                reverse(str.begin(), str.end());
+                res += str;
+                string ans(res.begin() , res.end());
+            return ans;
+        }
+        else{
+        string ans(res.begin() , res.end()-1);        
+        return ans;}
+        
+        return  "";
+    }
+};
+
+2) Antoher way is using stringstream
+
+// Time complexity : O(n)
+// space complexity : O(1)
+
+class Solution {
+public:
+    string reverseWords(string s) {
+
+        stringstream ss(s);
+        string res = "", str ;
+        
+        while(ss >> str)
+        {
+            res = str + " " + res;
+        }
+        
+        return  res.substr(0, res.length()-1);
+    }
+};
