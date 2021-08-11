@@ -1,0 +1,85 @@
+Given an integer array. The task is to find the maximum of the minimum of every window size in the array.
+Note: Window size varies from 1 to the size of the Array.
+
+Example 1:
+
+Input:
+N = 7
+arr[] = {10,20,30,50,10,70,30}
+Output: 70 30 20 10 10 10 10 
+Explanation: First element in output
+indicates maximum of minimums of all
+windows of size 1. Minimums of windows
+of size 1 are {10}, {20}, {30}, {50},
+{10}, {70} and {30}. Maximum of these
+minimums is 70. 
+Second element in output indicates
+maximum of minimums of all windows of
+size 2. Minimums of windows of size 2
+are {10}, {20}, {30}, {10}, {10}, and
+{30}. Maximum of these minimums is 30 and so on.
+
+1) Brute force solution
+we can use three loops and find maximum of minimum for every window
+// Time complexity : O(n*n*n)
+// space complexity : O(1)
+
+2) Optimal solution
+
+// time complexity : O(n + n + n + n) = O(4n)
+// space complexity : O(n + n + n) = O(3n)
+
+class Solution
+{
+    public:
+    //Function to find maximum of minimums of every window size.
+    vector <int> maxOfMin(int arr[], int n)
+    {
+        vector<int> left(n+1,-1), right(n+1,n);
+        
+        stack<int> st;
+        
+        // O(n) - finding next smaller element for each index from left
+        for(int i=0; i<n; i++)
+        {
+            while(!st.empty() && arr[st.top()] >= arr[i]) st.pop();
+            
+            if(!st.empty()) left[i] = st.top();
+            
+            st.push(i);
+        }
+        
+        //emptying the stack
+        while(!st.empty()) st.pop();
+        
+        // O(n) - finding next smaller element for each index from right
+        for(int i=n-1; i>=0; i--)
+        {
+            while(!st.empty() && arr[st.top()] >= arr[i]) st.pop();
+            
+            if(!st.empty()) right[i] = st.top();
+            
+            st.push(i);
+        }
+        
+        vector<int> res(n+1);
+        
+        // O(n) -> now right - left is the length of interval for maximum 
+        for(int i=0; i<n; i++)
+        {
+            int curLen = right[i] - left[i] - 1;
+            
+            res[curLen] = max(res[curLen], arr[i]);
+        }
+        
+        // O(n) - for finding the length which are not filled
+        for(int i=n-1; i>=1; i--)
+        {
+            res[i] = max(res[i], res[i+1]);
+        }
+        
+        vector<int> ans(res.begin()+1, res.end());
+        
+        return ans;
+    }
+};
