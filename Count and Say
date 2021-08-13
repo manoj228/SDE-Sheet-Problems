@@ -1,0 +1,48 @@
+Example 1:
+
+Input: n = 1
+Output: "1"
+Explanation: This is the base case.
+Example 2:
+
+Input: n = 4
+Output: "1211"
+Explanation:
+countAndSay(1) = "1"
+countAndSay(2) = say "1" = one 1 = "11"
+countAndSay(3) = say "11" = two 1's = "21"
+countAndSay(4) = say "21" = one 2 + one 1 = "12" + "11" = "1211"
+
+
+// time complexity : O(n)
+// space complexity : O(1)
+class Solution {
+public:
+    string countAndSay(int n) {     
+        
+        string str = "1";
+        // run loop from 1 to n
+        for(int j=1; j<n; j++)
+        {          
+            string prev = "";
+            
+            for(int i = 0; i < str.size(); i++)
+            {      
+                int c = 1;
+                
+                // count for each char
+                while(i+1 < str.size() && str[i] == str[i+1])
+                c++, i++;
+                
+                prev += to_string(c) + str[i];
+       
+            }
+            
+            str = prev;
+        
+        }
+            
+            
+        return str;
+    }
+};
