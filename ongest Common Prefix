@@ -1,0 +1,44 @@
+Example 1:
+
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+
+Example 2:
+
+Input: strs = ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+
+// Time complexity : O(n * m)
+// space complexity : O(1)
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& str) {
+        if(str.size() == 1) return str[0];
+        
+        
+        // sort the string based on length
+        sort(str.begin(), str.end(), [](const string a, const string b){
+            return a.length() < b.length();            
+        });
+        
+        // take first string as res , because , its has less no of characters
+        string res = str[0], temp = "";
+        
+        // O(n * m)
+        for(int i = 1; i < str.size(); i++)
+        {
+            temp = "";
+            for(int j = 0; j < res.length(); j++)
+            {
+                if(str[0][j] != str[i][j]) break;
+                else temp += str[0][j];
+            }
+            
+            // updating the result
+            res = temp;
+        }
+        
+        return res;
+    }
+};
