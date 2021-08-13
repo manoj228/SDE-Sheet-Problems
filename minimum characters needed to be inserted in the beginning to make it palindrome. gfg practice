@@ -1,0 +1,74 @@
+Input  : str = "ABC"
+Output : 2
+We can make above string palindrome as "CBABC"
+by adding 'B' and 'C' at front.
+
+Input  : str = "AACECAAAA";
+Output : 2
+We can make above string palindrome as AAAACECAAAA
+by adding two A's at front of string.
+
+
+// time complexity : O(N + M)
+// space complexity : O(N + M)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void computeLPS(string pattern, vector<int>& lps)
+{
+	int idx = 0;
+	lps[0] = 0;
+	
+	for(int i=1; i<pattern.size(); )
+	{
+		// if cur char mattern with char at idx , then update lps 
+		if(pattern[i] == pattern[idx])
+		{
+			// length should idx + 1;
+			lps[i] = idx+1;
+			
+			// now increment both i and idx
+			i++, idx++;
+		}
+		
+		else {
+			// if not match
+			// idx is non-zero, then go its previous lps[idx - 1]
+			if(idx != 0)
+			     idx = lps[idx - 1];
+			
+			// else , cur length is zero and increment i
+			else
+				lps[i] = 0, i++;
+		}
+	}
+}
+
+int KmpAlgorithm(string text)
+{
+	string revStr = text;
+	reverse(revStr.begin(), revStr.end());
+	
+	// combine the string , special char and its reverse string
+	string combined = text + "$" + revStr;
+	
+	vector<int> lps(combined.length());
+	
+	// compute longest prefix suffix 
+	computeLPS(combined, lps);
+
+   // now lps.back() will have longest match of prefix suffix
+   // so now subtract text length with longest prefix suffix
+    return text.length() - lps.back();
+}
+
+int main() {
+	
+	string text;
+	cin >> text ;
+	
+	cout << KmpAlgorithm(text);
+	
+	return 0;
+}
