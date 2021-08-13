@@ -1,0 +1,67 @@
+Input:  txt[] = "THIS IS A TEST TEXT"
+        pat[] = "TEST"
+Output: Pattern found at index 10
+
+Input:  txt[] =  "AABAACAADAABAABA"
+        pat[] =  "AABA"
+Output: Pattern found at index 0
+        Pattern found at index 9
+        Pattern found at index 12
+        
+Steps :
+
+1) Calculate Hash value for pattern  for eg: pat[i] - 'A' + 1; (A - 1 , B - 2, ... Z - 26)
+2) Calculate hash value for 1st window for text
+3) i) If hash(pat) == hash(text), then compare character else break
+   ii) Subtract leftmost(MSB) from hash(text) and shift hash(text) by 1
+   iii) Add new char to shifted hash(text)
+   
+   
+// time complexity : O(N + M)
+// Space complexity : O(1)
+#include <bits/stdc++.h>
+using namespace std;
+
+void checkForPattern(string txt, string pat)
+{
+	int hpat = 0, d = 26, p = 5381;
+	/* 
+	hpat - hash value for pattern
+	d - size of the alphabet
+	p - longest prime number
+	*/
+	
+	// hash value for pattern
+	for(int i=0; i<pat.size(); i++)
+	{
+		hpat = hpat * 26 + ((pat[i] - 'A' + 1) % p);
+	}
+	
+	int l = 0 , htxt = 0;
+	for(int r = 0; r < txt.size(); r++)
+	{
+		// calculate hash value for each window
+		htxt = htxt * 26 + ((txt[r] - 'A' + 1) % p);
+		
+		if(r - l + 1 == pat.size())
+		{
+			if(htxt == hpat) 
+			cout << "Pattern Found" << endl;
+			
+			else
+			htxt = htxt * 26 - ((txt[r] - 'A' + 1) * (int)(pow(d, r-1))) % p;
+			
+			l++;
+		}
+	}
+	
+}
+
+int main() {
+	string txt, pattern;
+	cin >> txt >> pattern;
+	
+	checkForPattern(txt, pattern);
+	
+	return 0;
+}
