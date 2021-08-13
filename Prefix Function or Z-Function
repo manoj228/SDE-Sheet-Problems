@@ -1,0 +1,89 @@
+Z-algorithm is the longest substring starting at k which is also prefix of string
+
+eg : text = x a b c a b z a b c , pattern = a b c
+
+now process string,  new string = a b c $ x a b c a b z  a  b  c
+                     index      = 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+                     z - array  = 0 0 0 0 0 3 0 0 2 0 0  3  0  0
+              
+             idx - pattern size - 1
+At index 5,  (5 - 3 - 1) 
+At index 8,  (8 - 3 - 1)
+At index 11, (11 - 3 - 1)
+
+// time complexity : O(N + M)
+// space complexity : O(N + M)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void calculateZFun(vector<int>& z, string combined)
+{
+	int l = 0, r = 0;
+	
+	for(int k = 1; k < combined.length(); k++)
+	{
+		if(k > r)
+		{
+			l = r = k ;
+			
+			// match suffix with prefix
+			while(r < combined.length() && combined[r] == combined[r-l]) r++;
+			
+			// then store length
+			z[k] = r - l;
+			
+			r--;
+		}
+		else
+		{
+			// inside box
+			int k1 = k - l;
+			
+			// if value not crosses boundary then copy it
+			if(z[k1] < r - k + 1) z[k] = z[k1];
+			
+			else{
+				l = k;
+				
+				while(r < combined.length() && combined[r] == combined[r-l]) r++;
+				
+				z[k] = r - l;
+				
+				r--;
+			}
+		}
+	}
+	
+}
+
+vector<int> matchPattern(string txt, string pat)
+{
+	// concat the text and pattern
+	string combined = pat + '$' + txt;
+	
+	vector<int> res, zFun(combined.size());
+	
+	calculateZFun(zFun, combined);
+	
+	for(int i = 0; i < combined.size(); i++)
+	{
+		// if z arr has pat length
+		if(zFun[i] == pat.length())
+		res.push_back(i - pat.length() - 1);
+	}
+	
+	return res;
+}
+
+int main() {
+	
+	string text, pattern;
+	cin >> text >> pattern ;
+	
+	vector<int> res = matchPattern(text, pattern);
+	for(auto output : res)
+	cout << "Pattern starting at : " << output << endl;
+	
+	return 0;
+}
