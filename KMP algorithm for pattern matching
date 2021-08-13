@@ -1,0 +1,74 @@
+
+// time complexity : O(N + M)
+// space complexity : O(N + M)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void computeLPS(string pattern, vector<int>& lps)
+{
+	int idx = 0;
+	
+	for(int i=1; i<pattern.size(); )
+	{
+		// if cur char mattern with char at idx , then update lps 
+		if(pattern[i] == pattern[idx])
+		{
+			// length should idx + 1;
+			lps[i] = idx + 1;
+			
+			// now increment both i and idx
+			i++, idx++;
+		}
+		
+		else {
+			// if not match
+			// idx is non-zero, then go its previous lps[idx - 1]
+			if(idx != 0)
+			     idx = lps[idx - 1];
+			
+			// else , cur length is zero and increment i
+			else
+				lps[i] = 0, i++;
+		}
+	}
+}
+
+bool KmpAlgorithm(string text, string pattern)
+{
+	vector<int> lps(pattern.length());
+	
+	// compute longest prefix suffix array
+	computeLPS(pattern, lps);
+	
+	int i = 0, j = 0;
+	while(i < text.size() && j < pattern.size())
+	{
+		// if both chars of text and pattern are match , then increment i and j
+		if(text[i] == pattern[j]) i++, j++;
+		else{
+			// if not match,
+			// traverse the j index to previous lps index
+			if(j != 0) j = lps[j-1];
+			
+			// else, traverse the i increment
+			else i++;
+		}
+	}
+	
+	// if j reached pattern size
+	if(j == pattern.size()) return true;
+	
+	return false;
+}
+
+int main() {
+	
+	string text, pattern;
+	cin >> text >> pattern ;
+	
+	if(KmpAlgorithm(text, pattern))
+	cout << "Pattern Found" << endl;
+	
+	return 0;
+}
