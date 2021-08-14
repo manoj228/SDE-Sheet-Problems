@@ -1,0 +1,71 @@
+Tree :                  1
+                      2   3
+                    4  5 N  N
+                    
+(a) Inorder (Left, Root, Right) : 4 2 5 1 3 
+(b) Preorder (Root, Left, Right) : 1 2 4 5 3 
+(c) Postorder (Left, Right, Root) : 4 5 2 3 1
+
+Inorder : root -> left, root, root -> right
+Preorder : root, root -> left, root -> right
+PostOder : root -> left, root -> right, root
+
+With Recursion :
+
+// Time complexity : O(n)
+// Space complexity : O(n)
+
+void callPostOrder(Node *root, vector<int>& res)
+{
+    if(!root) return;
+    
+    // recursion for left subtree
+    callPostOrder(root->left, res);
+    
+    // recursion for right subtree
+    callPostOrder(root->right, res);
+    
+    // push data into result
+    res.push_back(root->data);
+} 
+
+vector <int> postOrder(Node* root)
+{
+    vector<int> res;
+    
+    callPostOrder(root, res);
+    
+    return res;
+}
+
+Without Recursion :
+
+// Time complexity : O(n)
+// Space complexity : O(n + n)
+
+
+vector <int> postOrder(Node* root)
+{
+    vector<int> res;
+    
+    stack<Node *> st;
+    st.push(root);
+
+    while(!st.empty())
+    {
+        Node *cur = st.top(); st.pop();
+        
+        // push cur data
+        res.push_back(cur -> data);
+        
+        // push cur -> left into stack
+        if(cur -> left) st.push(cur -> left);
+        
+        // push cur -> right into stack
+        if(cur -> right) st.push(cur -> right);
+    }
+    // now if we reverse the array
+    reverse(res.begin(), res.end());
+    
+    return res;
+}
