@@ -1,0 +1,42 @@
+Example 1:
+Input: root = [1,2,5,3,4,null,6]
+Output: [1,null,2,null,3,null,4,null,5,null,6]
+
+Example 2:
+Input: root = []
+Output: []
+
+Example 3:
+Input: root = [0]
+Output: [0]
+ 
+ // Time complexity : O(n)
+// Space complexity : O(1)
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        TreeNode *cur = root;
+        
+        while(cur)
+        {
+            // if cur -> left is there
+            if(cur -> left)
+            {
+                TreeNode *temp = cur -> left;
+                
+                // look for temp -> right
+                while(temp -> right) temp = temp -> right;
+                
+                // link the left node to cur -> right
+                temp -> right = cur -> right;
+                
+                cur -> right = cur -> left;
+                
+                cur -> left = NULL;
+            }    
+            
+            // then move to right
+            cur = cur -> right;
+        }
+    }
+};
