@@ -1,0 +1,76 @@
+Tree :                  1
+                      2   3
+                    4  5 N  N
+                    
+(a) Inorder (Left, Root, Right) : 4 2 5 1 3 
+(b) Preorder (Root, Left, Right) : 1 2 4 5 3 
+(c) Postorder (Left, Right, Root) : 4 5 2 3 1
+
+
+With Recursion :
+
+// Time compleixty : O(n)
+// space complexity : O(n)
+
+class Solution {
+  public:
+  
+    void callInorder(Node *root, vector<int>& res)
+    {
+        if(!root) return;
+        
+        // recursion for left subtree until reaches null
+        callInorder(root->left, res);
+        
+        // now push the data into vector
+        res.push_back(root->data);
+        
+         // recursion for right subtree until reaches null
+        callInorder(root->right, res);
+    }
+
+    vector<int> inOrder(Node* root) {
+       vector<int> res;
+       
+       callInorder(root, res);
+       
+       return res;
+    }
+};
+
+Without Recursion :
+
+// Time compleixty : O(n)
+// space complexity : O(n + n)
+
+class Solution {
+  public:
+  
+    vector<int> inOrder(Node* root) {
+       vector<int> res;
+       
+       // to store node address
+       stack<Node *> st;
+       // run loop until root becomes empty and stack becomes empty
+       while(root || !st.empty())
+       {
+           // push root into stack and move for left sub-tree
+           while(root)
+           {
+               st.push(root);
+               root = root -> left;
+           }
+           
+           // now we have the res as stack top element
+           root = st.top(); st.pop();
+           
+           // push data into result
+           res.push_back(root->data);
+           
+           // move to right sub-tree
+           root = root -> right;
+       }
+       
+       return res;
+    }
+};
