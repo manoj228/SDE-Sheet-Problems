@@ -1,0 +1,49 @@
+Left view of following tree is 1 2 4 8.
+
+          1
+       /     \
+     2        3
+   /     \    /    \
+  4     5   6    7
+   \
+     8   
+
+Example :
+
+Input:
+   1
+ /  \
+3    2
+Output: 1 3
+
+
+ // Time complexity : O(h)
+ // space complexity : O(n)
+ 
+void callLeftView(Node *root, vector<int> &res, int level, int &maxi)
+{
+    if(!root) return;
+    
+    // cur level is maxi
+    // then this is the first node of that level
+    if(level > maxi)
+    {
+        res.push_back(root->data);
+        maxi = level;
+    }
+    
+    // recursion for left subtree
+    callLeftView(root->left, res, level+1, maxi);
+    
+    // recursion for right subtree
+    callLeftView(root->right, res, level+1, maxi);
+}
+vector<int> leftView(Node *root)
+{
+  vector<int> res;
+  
+  int maxi = -1;
+  callLeftView(root, res, 0, maxi);
+  
+  return res;
+}
