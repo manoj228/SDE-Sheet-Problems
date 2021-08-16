@@ -1,0 +1,78 @@
+Example 1:
+
+Input: s = "ADOBECODEBANC", t = "ABC"
+Output: "BANC"
+Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
+Example 2:
+
+Input: s = "a", t = "a"
+Output: "a"
+Explanation: The entire string s is the minimum window.
+Example 3:
+
+Input: s = "a", t = "aa"
+Output: ""
+Explanation: Both 'a's from t must be included in the window.
+Since the largest window of s only has one 'a', return empty string.
+
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        
+        // base cases
+        if(s.length() == 0 || t.length() == 0) return "";
+        if(s.length() == t.length() && s == t) return s;
+        
+        vector<int> freq(128, 0);       
+        // count the freq of t 
+        for(auto ch : t) freq[ch]++;
+        
+        // make t count as res count
+        int satisfiedCount = t.size();
+        
+        // two pointers, minlen and start index
+        int left = 0, right = 0, minLen = INT_MAX, startIdx = 0 ;
+        
+        while(left < s.size() && right <= s.size())
+        { 
+            // if window is invalid , move right
+            if(satisfiedCount)
+            {
+                // if reached end
+                if(right == s.size()) break;
+                
+                // reduce the freq count of cur char
+                freq[s[right]]--;
+                
+                // check if freq is >= 0, reduce the count
+                if(freq[s[right]] >= 0) satisfiedCount--;
+                
+                // move right pointer
+                right++;
+            }
+            
+            // if window is valid, move left to reduce the size
+            else{
+                // calculate min length
+                if(minLen > right - left){
+                    minLen = right - left;
+                    // note the start index
+                    startIdx = left;
+                }
+                
+                // increase the freq count of left char
+                freq[s[left]]++;
+                
+                // check if freq is still > 0, increase the count
+                if(freq[s[left]] > 0) satisfiedCount++;
+                
+                // move left pointer
+                left++;
+            }
+        }
+        
+        return minLen == INT_MAX ? "" : s.substr(startIdx, minLen);
+        
+    }
+};
