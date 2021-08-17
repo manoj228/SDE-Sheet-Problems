@@ -1,0 +1,67 @@
+Example 1:
+Input: root = [5,3,6,2,4,null,7], k = 9
+Output: true
+
+Example 2:
+Input: root = [5,3,6,2,4,null,7], k = 28
+Output: false
+
+Example 3:
+Input: root = [2,1,3], k = 4
+Output: true
+
+
+1) using set
+// Time complexity : O(n)
+// Space complexity : O(n)
+
+class Solution {
+public:
+    unordered_set<int> st;
+    bool findTarget(TreeNode* root, int k) {
+        if(!root) return false;
+        
+        if(st.find(k - root->val) != st.end()) return true;
+        
+        st.insert(root->val);
+        
+        return findTarget(root->left, k) || findTarget(root->right, k);
+    }
+};
+
+2) using stack
+
+// Time complexity : O(n)
+// Space complexity : O(logn)
+
+class Solution {
+public:
+    bool search(TreeNode *root, TreeNode* cur, int k)
+    {
+        if(!root) return false;
+        
+        // check for reduced k with root
+        // ensure that it is not equal to cur
+        // eg :k = 8, then cur = 4, reduced k = 4, then, root should not be 4
+        return (root -> val == k) && (root != cur) ||
+               (root -> val > k) && search(root->left, cur, k) || 
+               (root -> val < k) && search(root->right, cur, k);
+    }
+    
+    bool find(TreeNode *root, TreeNode* cur, int k)
+    {
+        if(!cur) return false;
+        
+        // fix root and reduce k, recur for cur -> left and cur -> right
+        return search(root, cur, k - cur->val) || 
+                 find(root, cur -> left, k) || 
+                 find(root, cur -> right, k);
+    }
+    
+    bool findTarget(TreeNode* root, int k) {
+        if(!root) return false;
+        
+        // pass two root nodes
+        return find(root, root, k);
+    }
+};
