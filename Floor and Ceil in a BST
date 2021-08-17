@@ -1,0 +1,36 @@
+          8
+        /   \    
+      4      12
+    /  \    /  \
+   2    6  10   14
+
+Key: 11  Floor: 10  Ceil: 12
+Key: 1   Floor: -1  Ceil: 2
+Key: 6   Floor: 6   Ceil: 6
+Key: 15  Floor: 14  Ceil: -1
+
+
+// time complexity : O(n)
+// space complexity : O(1)
+void floorCeilBSTHelper(Node* root, int key, int& floor, int& ceil)
+{
+ 
+    while (root) {
+ 
+        if (root->data == key) {
+            ceil = root->data;
+            floor = root->data;
+            return;
+        }
+ 
+        if (key > root->data) {
+            floor = root->data;
+            root = root->right;
+        }
+        else {
+            ceil = root->data;
+            root = root->left;
+        }
+    }
+    return;
+}
