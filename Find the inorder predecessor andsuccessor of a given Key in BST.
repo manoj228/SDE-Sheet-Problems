@@ -1,0 +1,44 @@
+key = 65;    //Key to be searched in BST
+ 
+   /* Let us create following BST
+              50
+           /     \
+          30      70
+         /  \    /  \
+       20   40  60   80 */
+       
+       
+Predecessor is 60
+Successor is 70
+
+
+// Time complexity : O(n)
+// space complexity : O(1)
+
+void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
+{
+
+if(!root) return ;
+
+// recursion for left subtree
+findPreSuc(root -> left, pre, suc, key);
+
+// if cur value is lesser than key
+if(root -> key < key)
+{
+    pre = root;
+}
+
+// if cur val is  greater than key
+else if(root -> key > key)
+{
+    // check if this is the first val found
+    // or else cur val is minimum than prev value
+    if(!suc || (suc && root -> key < suc -> key))
+    suc = root;
+}
+
+// recursion for right subtree
+findPreSuc(root -> right, pre, suc, key);
+
+}
