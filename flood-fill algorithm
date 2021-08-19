@@ -1,0 +1,35 @@
+Example 1:
+Input: image = [[1,1,1],[1,1,0],[1,0,1]], sr = 1, sc = 1, newColor = 2
+Output: [[2,2,2],[2,2,0],[2,0,1]]
+Explanation: From the center of the image with position (sr, sc) = (1, 1) (i.e., the red pixel), all pixels connected by a path of the same color as the starting pixel (i.e., the blue pixels) are colored with the new color.
+Note the bottom corner is not colored 2, because it is not 4-directionally connected to the starting pixel.
+
+Example 2:
+Input: image = [[0,0,0],[0,0,0]], sr = 0, sc = 0, newColor = 2
+Output: [[2,2,2],[2,2,2]]
+
+// Time complexity : O(n*n)
+// Space complexity : O(1)
+class Solution {
+public:
+    void fill(vector<vector<int>>& mat, int r, int c, int oldColor, int newColor)
+    {
+        // base cases
+        if(r < 0 || c < 0 || r >= mat.size() || c >= mat[0].size() || 
+           mat[r][c] == newColor || mat[r][c] != oldColor) return;
+        
+        mat[r][c] = newColor;
+        
+        fill(mat, r+1, c, oldColor, newColor);
+        fill(mat, r, c-1, oldColor, newColor);
+        fill(mat, r-1, c, oldColor, newColor);
+        fill(mat, r, c+1, oldColor, newColor);
+    }
+    
+    vector<vector<int>> floodFill(vector<vector<int>>& mat, int sr, int sc, int newColor) {
+        if(mat[sr][sc] != newColor)
+            fill(mat, sr, sc, mat[sr][sc], newColor);
+        
+        return mat;
+    }
+};
