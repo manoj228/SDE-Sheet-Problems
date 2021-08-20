@@ -1,0 +1,60 @@
+eg : I/p :
+      0 - 1
+      1 - 2
+      2 - 3
+      3 - 3
+o/p: true
+
+// Time complexity : O(V+E)
+// Space complexity : O(V)
+class Solution
+{
+    public:
+	// DFS
+	bool isCycle(int cur, vector<int> adj[], vector<bool> &vis, vector<bool> &rec)
+	{
+	    // if not visited
+	    if(!vis[cur]){
+	        // mark as visited
+	        vis[cur] = true;
+	        
+	        // recursion stack is to track for each vertices
+	        // if use visited arr only
+	        // then for : 0 -> 1, 1 -> 2,
+	        // dfs check : 0 -> 1 -> 2 
+	        // next time : 1 -> 2
+	        // Here 1 as already visited, so it makes cycle, but actually, its not forming cycle
+	        rec[cur] = true;
+	    
+	    for(auto v : adj[cur])
+	    {
+	        // check for adjacent
+	        if(!vis[v] && isCycle(v, adj, vis, rec)) 
+	        return true;
+	       
+	       // check in recursion stack
+	        else if(rec[v]) 
+	        return true;
+	    }
+	    }
+	    
+	    // mark as non-visited in recursion
+	    rec[cur] = false;
+	    
+	    return false;
+	}
+	
+	bool isCyclic(int V, vector<int> adj[]) 
+	{
+	   	vector<bool> vis(V, false), recStack(V, false);
+	   	
+	   	for(int i=0; i < V; i++)
+	   	{
+	   	    // recursion for all vertices
+	   	   if(isCycle(i, adj, vis, recStack)) return true;
+	   	    
+	   	}
+	   	
+	   	return false;
+	}
+};
