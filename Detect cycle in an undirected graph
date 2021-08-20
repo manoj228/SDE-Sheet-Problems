@@ -1,0 +1,59 @@
+Example 1:
+Input:   0 - 1
+         1 - 0, 2, 4
+         2 - 1, 3
+         3 - 4, 2
+         4, 1, 3
+Output: 1
+Explanation: 1->2->3->4->1 is a cycle.
+
+Example 2:
+Input: 
+0 
+1 - 2
+2 - 3
+Output: 0
+Explanation: No cycle in the graph.
+
+// Time complexity : O(V+E)
+// space complexity : O(V)
+class Solution 
+{
+    public:
+    // using dfs
+    bool isCyclic(int cur, vector<int> adj[], int parent, vector<bool> &vis)
+    {
+        vis[cur] = true;
+        
+        for(auto v : adj[cur])
+        {
+            // if not visited
+            if(!vis[v])
+            {
+                if(isCyclic(v, adj, cur, vis)) return true;
+            }
+            
+            // if already visited, check its parent
+            else if(v != parent)
+            return true;
+        }
+        
+        
+        return false;
+    }
+    
+	bool isCycle(int V, vector<int>adj[])
+	{
+	    vector<bool> vis(V, false);
+	    
+	    for(int i=0; i<V; i++)
+	    {
+	        if(!vis[i])
+	        {
+	            if(isCyclic(i, adj, -1, vis)) return true;
+	        }
+	    }
+	    
+	    return false;
+	}
+};
