@@ -1,0 +1,43 @@
+Input: n = 4, e = 6 
+0 -> 1, 0 -> 2, 1 -> 2, 2 -> 0, 2 -> 3, 3 -> 3 
+Output: DFS from vertex 1 : 1 2 0 3 
+
+// time complexity : O(V+E)
+// space complexity : O(V)
+
+class Solution 
+{
+    public:
+    void dfs(int cur, vector<int> adj[], vector<bool> &vis, vector<int> &res)
+    {
+        // maeke cur as visited
+        vis[cur] = true;
+        
+        res.push_back(cur);
+        
+        // traverse through adjacent element
+        for(auto v : adj[cur])
+        {
+            if(!vis[v])
+            dfs(v, adj, vis, res);
+        }
+    }
+    
+	vector<int>dfsOfGraph(int V, vector<int> adj[])
+	{
+	    vector<int> res;
+	    
+	    vector<bool> vis(V,false);
+	    
+	    for(int i=0; i<V; i++)
+	    {
+	        // if not visited, go to depth 
+	        if(!vis[i]){
+	        dfs(i, adj, vis, res);
+	        
+	        }
+	    }
+	    
+	    return res;
+	}
+};
