@@ -8,17 +8,22 @@ class Solution {
 public:
     bool bipartite(int cur, vector<vector<int>> graph, vector<int> &color)
     {
+        // if not colored , color it
         if(color[cur] == -1) color[cur] = 1;
         
         for(int i=0; i<graph[cur].size(); i++)
         {
+            // adjacent node
             int v = graph[cur][i];
             
+            // if not colored
             if(color[v] == -1)
             {
+                // color it with opposite
                 color[v] = 1 - color[cur];
                 if(!bipartite(v , graph, color)) return false;
             }
+            // if already colored, then check if cur and adj are same
             else if(color[v] == color[cur]) return false;
         }
         
@@ -32,8 +37,10 @@ public:
         
         for(int i=0; i<n; i++)
         { 
+            // if not colored
             if(color[i] == -1)
             {
+                // if not partite
                 if(!bipartite(i , graph, color)) return false;
             }
         }
