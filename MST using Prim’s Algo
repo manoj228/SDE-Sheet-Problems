@@ -1,0 +1,70 @@
+MST is a tree which has minimum weights
+ST(spanning tree) is a tree in which has N vertices and N-1 edges
+
+for prims algorithm,
+
+we need 3 arrays
+1) key -> to make minimum weight
+2) mst -> is included or not
+3) parent -> parent of each node
+
+
+// Time complexity : O(V+E(logV))
+// Space complexity : O(V + V + V)
+
+class Solution
+{
+	public:
+    int spanningTree(int V, vector<vector<int>> adj[])
+    {
+        // to make min weight
+       vector<int> key(V, INT_MAX);
+       
+       // to check included or not
+       vector<bool> mst(V, false);
+       
+       // parent
+       vector<int> parent(V, -1);
+       
+       // minheap
+       priority_queue< pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>> > pq;
+       
+       // key, node
+       pq.push({0, 0});
+       key[0] = 0;
+       
+       while(!pq.empty())
+       {
+           // cur node
+           int curNode = pq.top().second; pq.pop();
+           
+           // include it in mst
+           mst[curNode] = true;
+           
+           // traverse it adjacent
+           for(int k=0; k<adj[curNode].size(); k++)
+           {
+               int adjNode = adj[curNode][k][0] , weight = adj[curNode][k][1];
+               //cout << adjNode << " " << weight << endl;
+              // if mst is not included
+              if(!mst[adjNode] && key[adjNode] > weight)
+              {
+                  parent[adjNode] = curNode;
+                  key[adjNode] = weight;
+                  pq.push({key[adjNode], adjNode});
+              }
+           }
+       }
+       
+       
+       
+       int res = 0;
+       // take minimum weight of mst 
+      for(int i=0; i<V; i++)
+      {
+          if(key[i] != INT_MAX) res += key[i];
+      }
+       
+       return res;
+    }
+};
