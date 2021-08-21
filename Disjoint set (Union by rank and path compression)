@@ -1,0 +1,39 @@
+Two operations
+1) find parent 
+2) union
+
+// Time complexity : O(4)
+// Space complexity : O(N+N)
+
+
+// make each node as parent of itself
+vector<int> parent(n+1);
+for(int i=0; i<=n; i++) parent[i] = i;
+
+// make rank 
+vector<int> rank(n+1, 0);
+
+int findParent(int x)
+{
+     if(x == parent[x]) return x;
+     
+     // path compressing
+     return parent[x] = find(parent[x]);
+}
+
+
+void union(int u,int v)
+{
+	u = findParent(u);
+	v = findParent(v);
+	
+	if(rank[u] < rank[v]) 
+  parent[u] = v;
+  else if(rank[v] < rank[u])
+  parent[v] = u;
+  else
+  {
+  parent[v] = u;
+  rank[u]++;
+  }
+}
