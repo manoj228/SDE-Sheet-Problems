@@ -1,0 +1,87 @@
+1) sort all edges based on weight
+2) check parent for u and v ,  
+   if both belongs to different component, then update cost and do union
+
+
+// Time complexity : O(N logN + 4) = O(NlogN)
+// space complexity : O(N + N + N) = O(N)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node {
+    int u;
+    int v;
+    int wt; 
+    node(int first, int second, int weight) {
+        u = first;
+        v = second;
+        wt = weight;
+    }
+};
+
+bool cmp(node a, node b)
+{
+	return a.wt < b.wt;
+}
+
+int findParent(int node, vector<int> &parent)
+{
+	if(node == parent[node]) return node;
+	
+	// do path compression
+	return parent[node] = findParent(parent[node], parent);
+} 
+
+void union(int u, int v, vector<int> &parent, vector<int> &rank)
+{
+	u = findParent(u);
+	v = findParent(v);
+	
+	if(rank(u) < rank(v)) parent[u] = v;
+	else if(rank(u) > rank(v)) parent[v] = u;
+	else{
+		parent[v] = u;
+		
+		// update rank of u
+		rank[u]++;
+	}
+}
+
+int main() {
+	int N,m;
+	cin >> N >> m;
+	vector<node> edges; 
+	for(int i = 0; i<m; i++) {
+	    int u, v, wt;
+	    cin >> u >> v >> wt; 
+	    edges.push_back(node(u, v, wt)); 
+	}
+	
+	// 1) sort based on weight
+	sort(edges.begin(), edges.end(), cmp);
+	
+	vector<int> rank(N, 0);
+	vector<int> parent(N);
+	// make cur as itself parent
+	for(int i=0; i<N; i++) parent[i] = i;
+	
+	int minCost = 0;
+	vector<pair<int,int>> mst;
+	
+	// traverse all the edges
+	for(auto it : edges)
+	{
+		if(findParent(it.u, parent) != findParent(it.v, parent))
+		{
+			mst.push_back({it.u, it.v});
+			minCost += it.wt;
+			union(it.u, it.v, rank, parent);
+		}
+	}
+	
+	cout << minCost << endl;
+	for(auto it : mst) cout << it.first << " " << it.second << endl;
+	
+	return 0;
+}
