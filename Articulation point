@@ -1,0 +1,96 @@
+Articulation point is the point if we remove any vertices , then it will split the graph into two or more components
+
+// time complexity : O(N + E)
+// space complexity : O(4N)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+    void dfs(int node, int parent, int timer, vector<int> &tin, 
+             vector<int> &low, vector<bool> &vis, vector<int> &articulationPoint, vector<int> adj[])
+    {
+    // mark as cur node visited
+    vis[node] = true; 
+    
+    // next fill the array with timer
+    tin[node] = low[node] = timer++; 
+    
+    // to track of individual child
+    // individual child means, for a vertice , it should have only one way to reach 
+    // eg : 1 - 2
+    //      |
+    //      3 - 4   , if we remove 1, we can't reach 2 and 3 - 4 children
+    int individualChid = 0;
+    
+    for(auto it: adj[node]) {
+    	// if it comes from parent, then skip 
+        if(it == parent) continue;
+        
+        // if not visited
+        if(!vis[it]) {
+        	
+        	// call dfs for adjacent
+            dfs(it, node, timer, tin, low, vis, articulationPoint, adj); 
+            
+            // update cur node lowest time with lowest of adjacent 
+            low[node] = min(low[node], low[it]); 
+            
+            // if this condition met, then there it is articulation point
+            if(low[it] >= tin[node] && parent != -1) {
+            
+                // make a note of node, it may repeat many times
+                articulationPoint[node] = 1;
+            }
+            
+            individualChid++;
+        } 
+        
+        // if visited
+        else 
+        {
+        	// update cur node lowest time with timer of adjacent
+            low[node] = min(low[node], tin[it]); 
+        }
+    }
+    
+    // if it is parent, then it must be articulation point
+    if(parent == -1 && individualChid > 1)
+    articulationPoint[node] = 1;
+}
+
+int main() {
+	int n, m;
+    cin >> n >> m; 
+	vector<int> adj[n]; 
+	for(int i = 0;i<m;i++) {
+	    int u, v;
+	    cin >> u >> v; 
+	    adj[u].push_back(v);
+	    adj[v].push_back(u); 
+	}
+	
+	 // time of node
+     vector<int> tim(n, -1);
+        
+     // lowest of all its adjacent
+     vector<int> low(n , -1);
+        
+     // to track of all nodes
+     vector<bool> vis(n, false);
+     
+     // to track of articulation point
+     vector<int> articulationPoint(n, 0);
+        
+     int timer = 0;
+     for(int i=0; i<n; i++){
+        if(!vis[i])
+            dfs(i, -1, timer, tim, low, vis, articulationPoint, adj);
+    }
+    
+    for(int i=0; i<n; i++)
+    {
+    	if(articulationPoint[i]) cout << i << " ";
+    }
+	
+	return 0;
+}
