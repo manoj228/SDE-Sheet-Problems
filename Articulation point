@@ -53,7 +53,7 @@ using namespace std;
         }
     }
     
-    // if it is parent, then it must be articulation point
+    // if it is parent and having more than one individual child, then it must be articulation point
     if(parent == -1 && individualChid > 1)
     articulationPoint[node] = 1;
 }
