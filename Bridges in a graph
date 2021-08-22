@@ -1,0 +1,76 @@
+Bridge means if we remove any edge between two vertices, then it should separate into two or more vertices
+
+
+// Tiem complexity : O(N + E)
+// Space complexity : O(2N)
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+    void dfs(int node, int parent, int timer, vector<int> &tin, 
+             vector<int> &low, vector<bool> &vis, vector<int> adj[])
+    {
+    // mark as cur node visited
+    vis[node] = true; 
+    
+    // next fill the array with timer
+    tin[node] = low[node] = timer++; 
+    
+    for(auto it: adj[node]) {
+    	// if it comes from parent, then skip 
+        if(it == parent) continue;
+        
+        // if not visited
+        if(!vis[it]) {
+        	
+        	// call dfs for adjacent
+            dfs(it, node, timer, tin, low, vis, adj); 
+            
+            // update cur node lowest time with lowest of adjacent 
+            low[node] = min(low[node], low[it]); 
+            
+            // if this condition met, then there it is bridge
+            if(low[it] > tin[node]) 
+                cout << node << " " << it << endl;
+        } 
+        
+        // if visited
+        else 
+        {
+        	// update cur node lowest time with timer of adjacent
+            low[node] = min(low[node], tin[it]); 
+        }
+    }
+    
+    
+}
+
+int main() {
+	int n, m;
+    cin >> n >> m; 
+	vector<int> adj[n]; 
+	for(int i = 0;i<m;i++) {
+	    int u, v;
+	    cin >> u >> v; 
+	    adj[u].push_back(v);
+	    adj[v].push_back(u); 
+	}
+	
+	 // time of node
+     vector<int> tim(n, -1);
+        
+     // lowest of all its adjacent
+     vector<int> low(n , -1);
+        
+     // to track of all nodes
+     vector<bool> vis(n, false);
+        
+     int timer = 0;
+     for(int i=0; i<n; i++){
+        if(!vis[i])
+            dfs(i, -1, timer, tim, low, vis, adj);
+    }
+	
+	return 0;
+}
