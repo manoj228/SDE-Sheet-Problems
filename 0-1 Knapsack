@@ -1,0 +1,54 @@
+Example 1:
+
+Input:
+N = 3
+W = 4
+values[] = {1,2,3}
+weight[] = {4,5,1}
+Output: 3
+Example 2:
+
+Input:
+N = 3
+W = 3
+values[] = {1,2,3}
+weight[] = {4,5,6}
+Output: 0
+
+// Time complexity : O(W * n)
+// space complexity : O(W * n)
+class Solution
+{
+    public:
+    
+    int find(int idx, int W, int wt[], int val[], int n, vector<vector<int>> &dp)
+    {
+        if(idx >= n) return 0;
+        
+        if(W == 0) return 0;
+        
+        // memoization 
+        // if cur val is already stored, then return it
+        if(dp[W][idx] != -1) return dp[W][idx];
+        
+        if(wt[idx] <= W)
+        {
+            // picking 
+            int left = val[idx] + find(idx + 1, W - wt[idx], wt, val, n, dp);
+            
+            // not picking
+            int right = find(idx + 1, W, wt, val , n, dp);
+            
+            return dp[W][idx] = max(left, right);
+        }
+        
+       return dp[W][idx] = find(idx + 1, W, wt, val , n, dp);
+    }
+    
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+        vector<vector<int>> dp(W+1, vector<int>(n+1, -1));
+        
+        return find(0, W, wt, val, n, dp);
+    }
+};
