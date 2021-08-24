@@ -1,0 +1,49 @@
+I/ P :
+7
+20 8 27 37 9 12 46
+Output : 130
+
+Example 1:
+
+Input: N = 5, arr[] = {1, 101, 2, 3, 100} 
+Output: 106
+Explanation:The maximum sum of a
+increasing sequence is obtained from
+{1, 2, 3, 100}
+Example 2:
+
+Input: N = 3, arr[] = {1, 2, 3}
+Output: 6
+Explanation:The maximum sum of a
+increasing sequence is obtained from
+{1, 2, 3}
+
+// Time complexity : O(N * N)
+// Space complexity : O(N)
+
+class Solution{
+		
+	public:
+	int maxSumIS(int arr[], int n)  
+	{  
+	    vector<int> maxSum(n);
+	    
+	    // store in temp arr
+	    for(int i=0; i<n; i++)
+	    maxSum[i] = arr[i];
+	    
+	    // check if its increasing seq
+	    for(int i=0; i<n; i++)
+	    {
+	        for(int j=0; j<i; j++)
+	        {
+	            // j is left, so it shoule be small and
+	            // maintain the maximum sum
+	            if(arr[j] < arr[i] && maxSum[i] < maxSum[j] + arr[i])
+	            maxSum[i] = maxSum[j] + arr[i];
+	        }
+	    }
+	    
+	    return *max_element(maxSum.begin(), maxSum.end());
+	}  
+};
