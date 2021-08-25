@@ -1,0 +1,50 @@
+Example 1:
+
+Input:
+n = 4 , m = 3
+S[] = {1,2,3}
+Output: 4
+Explanation: Four Possible ways are:
+{1,1,1,1},{1,1,2},{2,2},{1,3}.
+Example 2:
+
+Input:
+n = 10 , m = 4
+S[] ={2,5,3,6}
+Output: 5
+Explanation: Five Possible ways are:
+{2,2,2,2,2}, {2,2,3,3}, {2,2,6}, {2,3,5} 
+and {5,5}.
+
+
+// Time complexity : O(m * n)
+// Space complexity : O(m * n)
+class Solution
+{
+  public:
+    long long find(int arr[], int i, int m, int n, vector<vector<long long int>>& dp)
+    {
+        if(n == 0) return 1;
+        
+        if(i >= m || n < 0) return 0;
+        
+        // memoization
+        if(dp[i][n] != -1) return dp[i][n];
+        
+        // picking 
+        long long int l = find(arr, i, m, n - arr[i], dp);
+        
+        // not picking
+        long long int r = find(arr, i+1, m, n, dp);
+        
+        
+        return dp[i][n] = l+r;
+    }
+  
+    long long int count( int S[], int m, int n )
+    {
+        vector<vector<long long int>> dp(m, vector<long long int>(n+1, -1));
+        
+        return find(S, 0, m, n, dp);
+    }
+};
