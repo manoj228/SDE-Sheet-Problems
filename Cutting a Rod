@@ -15,76 +15,43 @@ price    | 3   5   8   9  10  17  17  20
 
 
 
-// time complexity : O(N*N)
-// space complexity : O(N*N)
+// Recursive solution
 
-// CPP program for above approach
+// time complexity : O(pow(2*N))
+// space complexity : O(1)
+
 #include <iostream>
 using namespace std;
 
-// Global Array for
-// the purpose of memoization.
-int t[9][9];
-
-// A recursive program, using ,
-// memoization, to implement the
-// rod cutting problem(Top-Down).
-int un_kp(int price[], int length[],
-					int Max_len, int n)
+int cutRod(int price[], int i, int n, int maxLen,vector<vector<int>> &dp)
 {
-
-	// The maximum price will be zero,
-	// when either the length of the rod
-	// is zero or price is zero.
-	if (n == 0 || Max_len == 0)
+	// base case
+	if(i >= n || maxLen == 0) return 0;
+	
+	// i - 1 denotes index starts from 0 
+	// but to reduce rod length, we have consider index has to index + 1 ,
+	// so, rod length = rod length - (index + 1)
+	if(maxLen - i - 1 >= 0)
 	{
-		return 0;
+		// picking
+		int l = price[i] + cutRod(price, i, n, maxLen - (i + 1), dp);
+		
+		// not picking
+		int r = cutRod(price, i+1, n, maxLen, dp);
+		
+		return max(l ,r);
 	}
-
-	// If the length of the rod is less
-	// than the maximum length, Max_lene will
-	// consider it.Now depending
-	// upon the profit,
-	// either Max_lene we will take
-	// it or discard it.
-	if (length[n - 1] <= Max_len)
-	{
-		t[n][Max_len]
-			= max(price[n - 1]
-					+ un_kp(price, length,
-						Max_len - length[n - 1], n),
-				un_kp(price, length, Max_len, n - 1));
-	}
-
-	// If the length of the rod is
-	// greater than the permitted size,
-	// Max_len we will not consider it.
-	else
-	{
-		t[n][Max_len]
-			= un_kp(price, length,
-							Max_len, n - 1);
-	}
-
-	// Max_lene Max_lenill return the maximum
-	// value obtained, Max_lenhich is present
-	// at the nth roMax_len and Max_lenth column.
-	return t[n][Max_len];
+	
+	
+	return cutRod(price, i+1, n, maxLen, dp);
 }
 
-/* Driver program to
-test above functions */
-int main()
-{
-	int price[] = { 1, 5, 8, 9, 10, 17, 17, 20 };
+int main() {
+	int price[] = {1, 5, 8, 9};
 	int n = sizeof(price) / sizeof(price[0]);
-	int length[n];
-	for (int i = 0; i < n; i++) {
-		length[i] = i + 1;
-	}
-	int Max_len = n;
-
-	// Function Call
-	cout << "Maximum obtained value is "
-		<< un_kp(price, length, n, Max_len) << endl;
+	
+	vector<vector<int>> dp(n, vector<int>(n, -1));
+	cout << cutRod(price, 0, n, n, dp);
+	
+	return 0;
 }
