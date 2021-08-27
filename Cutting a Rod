@@ -20,7 +20,7 @@ price    | 3   5   8   9  10  17  17  20
 // time complexity : O(pow(2*N))
 // space complexity : O(1)
 
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
 int cutRod(int price[], int i, int n, int maxLen,vector<vector<int>> &dp)
