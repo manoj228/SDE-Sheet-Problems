@@ -1,0 +1,78 @@
+You are given k identical eggs and you have access to a building with n floors labeled from 1 to n.
+
+You know that there exists a floor f where 0 <= f <= n such that any egg dropped at a floor higher than f will break, 
+and any egg dropped at or below floor f will not break.
+
+Each move, you may take an unbroken egg and drop it from any floor x (where 1 <= x <= n).
+If the egg breaks, you can no longer use it. However, if the egg does not break, you may reuse it in future moves.
+
+Return the minimum number of moves that you need to determine with certainty what the value of f is.
+
+ 
+
+Example 1:
+
+Input: k = 1, n = 2
+Output: 2
+Explanation: 
+Drop the egg from floor 1. If it breaks, we know that f = 0.
+Otherwise, drop the egg from floor 2. If it breaks, we know that f = 1.
+If it does not break, then we know f = 2.
+Hence, we need at minimum 2 moves to determine with certainty what the value of f is.
+Example 2:
+
+Input: k = 2, n = 6
+Output: 3
+Example 3:
+
+Input: k = 3, n = 14
+Output: 4
+
+// Time Complexity: O((n * k) * log k)
+// Space Complexity: O(n * k) , 
+
+class Solution {
+public:
+    
+    int  superEggDrops(int n, int k, vector<vector<int>> &dp){
+        
+        // if egg is 1 or no of floor is 0, 1, return cur floor
+        if(n == 1 || k == 0 || k == 1) return k;
+        
+        if(dp[n][k] != -1) return dp[n][k];
+        
+        int mini = INT_MAX;
+        
+        // do binary search traveral
+        int l = 1, h = k;
+        while(l <= h)
+        {
+            int mid = (l + h) >> 1;
+            
+            // if egg breaks
+            int downFloor = superEggDrops(n - 1, mid - 1, dp) ;
+            
+            // if egg doesn't breaks
+            int topFloor = superEggDrops(n, k - mid, dp);
+   
+            int cur = 1 + max(downFloor, topFloor);
+            
+            if(downFloor < topFloor) 
+                l = mid + 1;
+            else
+                h = mid - 1;
+            
+            mini = min(cur, mini);
+        }
+        
+        
+        return dp[n][k] = mini;
+}
+    
+    // n eggs, k floors
+    int superEggDrop(int n, int k) {
+        
+        vector<vector<int>> dp(n+1,vector<int> (k+1,-1));
+        return superEggDrops(n, k, dp);
+    }
+};
