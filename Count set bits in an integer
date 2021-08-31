@@ -1,0 +1,27 @@
+Input : n = 6
+Output : 2
+Binary representation of 6 is 110 and has 2 set bits
+
+Input : n = 13
+Output : 3
+Binary representation of 13 is 1101 and has 3 set bits
+
+// Time complexity : O(logn)
+// space complexity : O(1)
+class Solution {
+  public:
+    int setBits(int n) {
+
+        int c = 0;
+        while(n)
+        {
+            // if bit is set
+            c += (n & 1);
+            
+            // n/2 or n >>= 1
+            n >>= 1;
+        }
+        
+        return c;
+    }
+};
