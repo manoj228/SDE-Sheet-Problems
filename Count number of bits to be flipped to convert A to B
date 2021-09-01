@@ -1,0 +1,76 @@
+Example 1:
+
+Input: A = 10, B = 20
+Output: 4
+Explanation:
+A  = 01010
+B  = 10100
+As we can see, the bits of A that need 
+to be flipped are 01010. If we flip 
+these bits, we get 10100, which is B.
+Example 2:
+
+Input: A = 20, B = 25
+Output: 3
+Explanation:
+A  = 10100
+B  = 11001
+As we can see, the bits of A that need 
+to be flipped are 10100. If we flip 
+these bits, we get 11001, which is B.
+
+
+
+
+1) First solution:
+
+Time complexity  : O(max(a,b))
+Space complexity : O(1)
+
+class Solution{
+    public:
+    // Function to find number of bits needed to be flipped to convert A to B
+    int countBitsFlip(int a, int b){
+        
+        int c = 0;
+        
+        while(a || b)
+        {
+            if((a&1) != (b & 1)) c++;
+            
+            a >>= 1;
+            b >>= 1;
+        }
+        
+        return c;
+        
+    }
+};
+
+
+2) Another solution:
+
+Find Xor of a and b , now XOR of two number will have set bits only at those places where A differs from B. 
+so we can count the set bits alone
+
+Time complexity  : O(XOR)
+Space complexity : O(1)
+
+class Solution{
+    public:
+    // Function to find number of bits needed to be flipped to convert A to B
+    int countBitsFlip(int a, int b){
+        
+        int c = 0, xoR = a ^ b;
+        
+        while(xoR)
+        {
+            if(xoR & 1) c++;
+            
+            xoR >>= 1;
+        } 
+        
+        return c;
+        
+    }
+};
