@@ -24,7 +24,7 @@ these bits, we get 11001, which is B.
 
 1) First solution:
 
-Time complexity  : O(max(a,b))
+Time complexity  : O(loga + logb)
 Space complexity : O(1)
 
 class Solution{
@@ -53,7 +53,7 @@ class Solution{
 Find Xor of a and b , now XOR of two number will have set bits only at those places where A differs from B. 
 so we can count the set bits alone
 
-Time complexity  : O(XOR)
+Time complexity  : O(log(a^b))
 Space complexity : O(1)
 
 class Solution{
