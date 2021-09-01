@@ -130,6 +130,57 @@ class Solution{
 };
 
 3) Most Optimal solution
-Time complexity : O(logn)
-space complexity : O(1)
+// time complexity : O(logn)
+// space compelxity : O(1)
+
+class Solution{
+    public:
+    int getLeftMostBit(int n)
+    {
+        int c = -1;
+        while(n)
+        {
+            c++;
+            n >>= 1;
+        }
+        
+        return c;
+    }
+    
+    int countSetBits(int n)
+    { 
+        int cnt = 0;
+        int x = getLeftMostBit(n);
+        
+        while(n)
+        {
+            // (1 << x) meanse 2 * x;
+            // x * (1 << x) / 2 - uesd to count the no of set bits for the nearest power of 2
+            // After the nearest power of 2, find
+            // n - (1 << x) + 1 - used to find the no of set bits of left most bit from right to left
+            
+            cnt += (x * (1 << x) / 2 ) + (n - (1 << x) + 1);
+            
+            
+            // n & ~(1 << x) used to flip the left most bit from right to left
+            // because, we already added the left most set bit count, so we need to flip that
+            n = n & ~(1 << x);
+            
+            
+            // here, we are dividing the problem into sub-problems 
+            while(n && x > 0)
+            {
+                if(n & (1 << x)) 
+                break;
+                
+                // reducing the x , because we are calculating the position from right
+                x--;
+            }
+            
+        }
+        
+        return cnt;
+    
+    }
+};
 
