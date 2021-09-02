@@ -1,0 +1,55 @@
+Example 1:
+
+Input: N = 1
+Output: true
+Explanation:
+1 is equal to 2 raised to 0 (20 = 1).
+Example 2:
+
+Input: N = 98
+Output: false
+Explanation: 
+98 cannot be obtained by any power of 2.
+
+
+1) Brute force solution
+All power of 2 should have only one set bit
+
+// Time complexity : O(logn)
+// space complexity : O(1)
+class Solution{
+    public:
+    bool isPowerofTwo(long long n){
+        
+      int c = 0;
+      
+      while(n)
+      {
+          c++;
+          
+          n &= (n-1);
+      }
+      
+      return c == 1;
+    }
+};
+
+
+
+2) Optimal solution
+
+// Time complexity : O(1)
+// space complexity : O(1)
+
+class Solution{
+    public:
+    bool isPowerofTwo(long long n){
+        
+       // if n is zero
+       if(!n) return false;
+       
+       // else
+       // n & (n-1) == 0 , then it will be power of 2
+        return !(n & (n-1));
+    }
+};
