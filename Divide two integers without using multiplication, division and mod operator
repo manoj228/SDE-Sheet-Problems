@@ -1,0 +1,80 @@
+Input : a = 10, b = 3
+Output : 3
+
+Input : a = 43, b = -8
+Output :  -5 
+
+1) Brute force solution
+
+// Time complexity : O(res)
+// space complexity : O(1)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int find(int dividend, int divisor)
+{
+	if(divisor == 0 || (dividend == INT_MIN && divisor == -1)) return -1;
+	
+	int sign = (dividend < 0) ^ (divisor < 0) ? -1 : 1;
+	
+	dividend = abs(dividend) , divisor = abs(divisor);
+	
+	int res = -1;
+	while(dividend >= 0)
+	{
+		dividend -= divisor;
+		res++;
+	}
+	
+	return res * sign;
+}
+
+int main() {
+	// your code goes here
+	int dividend , divisor;
+	
+	cin >> dividend >> divisor;
+	
+	cout << find(dividend, divisor) << endl;
+	
+	return 0;
+}
+
+2) Efficient solution
+
+// Time complexity : O(noOfShits)
+// space complexity : O(1)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int find(int dividend, int divisor)
+{
+	if(divisor == 0 || (dividend == INT_MIN && divisor == -1)) return -1;
+	
+	int sign = (dividend < 0) ^ (divisor < 0) ? -1 : 1;
+	
+	dividend = abs(dividend) , divisor = abs(divisor);
+	
+	int noOfShits = 0;
+	while(dividend >= (divisor << noOfShits))
+	{
+		noOfShits++;
+	}
+	
+	int res = 1 + (1 << noOfShits-1);
+	
+	return res * sign;
+}
+
+int main() {
+	// your code goes here
+	int dividend , divisor;
+	
+	cin >> dividend >> divisor;
+	
+	cout << find(dividend, divisor) << endl;
+	
+	return 0;
+}
