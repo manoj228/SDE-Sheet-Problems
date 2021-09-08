@@ -1,0 +1,47 @@
+Example 1:
+
+Input: n = 3, r = 2
+Output: 3
+Explaination: 3C2 = 3. 
+
+Example 2:
+
+Input: n = 2, r = 4
+Output: 0
+Explaination: r is greater than n.
+
+1) Dp solution
+
+// Time complexity : O(n * r)
+// Space complexity : O(n * r)
+
+#define mod 1000000007
+class Solution {
+public:
+    int find(vector<vector<int>> &dp, int n, int r)
+    {
+        if(r == 0 || r == n) return dp[n][r] = 1;
+        
+        if(dp[n][r] != -1) return dp[n][r] % mod;
+        
+        // picking 
+        int l = find(dp, n - 1, r - 1) % mod ;
+        
+        // not picking
+        int k = find(dp, n - 1, r) % mod ;
+        
+        return dp[n][r] = (l + k) % mod;
+    }
+
+    int nCr(int n, int r) {
+        if(r > n) return 0;
+        
+        vector<vector<int>> dp(n+1, vector<int>(r+1,-1));
+        
+        int res = find(dp, n, r);
+  
+        
+        return res;
+    }
+};
+
