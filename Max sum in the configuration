@@ -1,0 +1,52 @@
+Example 1:
+
+Input:
+N = 4
+A[] = {8,3,1,2}
+Output: 29
+Explanation: Above the configuration
+possible by rotating elements are
+3 1 2 8 here sum is 3*0+1*1+2*2+8*3 = 29
+1 2 8 3 here sum is 1*0+2*1+8*2+3*3 = 27
+2 8 3 1 here sum is 2*0+8*1+3*2+1*3 = 17
+8 3 1 2 here sum is 8*0+3*1+1*2+2*3 = 11
+Here the max sum is 29 
+
+
+1) Brute force solution 
+we can use two for loops and find the result
+// Time complexity : O(n * n)
+// space complexity : O(1)
+
+2) Optimal solution
+Steps:
+1) first find total sum of array values and total values
+2) find new val using previous rotation
+
+// Time complexity : O(n)
+// space complexity : O(1)
+
+int max_sum(int arr[],int N)
+{
+    int totSum = 0, totVal = 0;
+    
+    for(int i=0; i< N; i++)
+    {
+        totSum += arr[i];
+        totVal += i * arr[i];
+    }
+    
+    int res = totVal;
+    for(int i=1; i<N; i++)
+    {
+        // for every rotation we get, arr[i-1] * n-1
+        // so we need to reduce the totSum by arr[i-1]
+        totVal = totVal + (arr[i-1] * (N-1)) - (totSum - arr[i-1]);
+      
+        res = max(res, totVal);
+    }
+    
+    
+    return res;
+
+}
