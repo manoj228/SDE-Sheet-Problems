@@ -1,0 +1,91 @@
+For Input:
+5 5
+1 0
+0 2
+2 1
+0 3
+3 4
+
+Your Output: 
+0 1 2,3,4,
+
+// Tarjan's algo (Single Pass algorithm)
+// Time complexity : O(V + E)
+
+bool cmp(vector<int> v1, vector<int> v2)
+{
+    return v1.front()<v2.front();
+}
+
+
+class Solution
+{
+	public:
+	public:
+	void dfs(int u, vector<int> adj[], vector<int> &disc, vector<int> &low, vector<bool> &inStack, 
+	         stack<int> &st, vector<vector<int>> &res)
+	{
+	    static int timer = 0;
+	    
+	    disc[u] = low[u] = timer++;
+	    st.push(u);
+	    inStack[u] = true;
+	    
+	    for(auto v : adj[u])
+	    {
+	        // if not visited
+	        if(disc[v] == -1)
+	        {
+	            dfs(v, adj, disc, low, inStack, st, res);
+	            low[u] = min(low[u], low[v]);
+	        }
+	        // if already visited, then check if its a cross-edge or back-edge
+	        else if(inStack[v])   // back-edge
+	        {
+	            low[u] = min(low[u], disc[v]);
+	        }
+	    }
+	    
+	    // check if u is strongly connected
+	    if(low[u] == disc[u])
+	    {
+	        vector<int> temp;
+	        while(st.top() != u)
+	        {
+	            temp.push_back(st.top()); 
+	            inStack[st.top()] = false;
+	            st.pop();
+	        }
+	        
+	        temp.push_back(st.top()); 
+	        inStack[st.top()] = false;
+	        st.pop();
+	           
+	        sort(temp.begin(), temp.end());
+	        res.push_back(temp);
+	    }
+	    
+	}
+	
+    vector<vector<int>> tarjans(int V, vector<int> adj[])
+    {
+        vector<int> disc(V, -1) , low(V, -1);
+        vector<bool> inStack(V, false); // to avoid cross edge (Cross edge is a edge between two strongly connected components)
+        stack<int> st;
+        
+        vector<vector<int>> res;
+        
+        for(int i=0; i<V; i++)
+        {
+            if(disc[i] == -1)
+            dfs(i, adj, disc, low, inStack, st, res);
+        }
+        
+        for(int i=0; i<res.size(); i++)
+        sort(res[i].begin(), res[i].end());
+        
+        sort(res.begin(), res.end(), cmp);
+        
+        return res;
+    }
+};
