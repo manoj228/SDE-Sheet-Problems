@@ -1,4 +1,4 @@
-count of bst = combination of left subtree * combination of right subtree
+count of bst += combination of left subtree * combination of right subtree
 
 Example 1:
 
