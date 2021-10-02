@@ -15,6 +15,7 @@ Output: ""
 Explanation: Both 'a's from t must be included in the window.
 Since the largest window of s only has one 'a', return empty string.
 
+1) First Approach
 
 class Solution {
 public:
@@ -74,5 +75,58 @@ public:
         
         return minLen == INT_MAX ? "" : s.substr(startIdx, minLen);
         
+    }
+};
+
+2) Second approach
+// Time compleixty : O(n)
+// space complexity : O(n)
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        
+        if(t.size() > s.size()) return "";
+        
+        unordered_map<char, int> mp;
+        for(auto c : t) mp[c]++;
+        
+        int left = 0, right = 0, minLen = INT_MAX, startIdx = -1;
+        
+        int counter = mp.size();
+        
+        while(right < s.size())
+        {
+            char ch = s[right];
+            
+            if(mp.find(ch) != mp.end())
+            {
+                mp[ch]--;
+                
+                if(mp[ch] == 0) counter--;
+            }
+            
+            ++right;
+            while(counter == 0)
+            {
+                if(minLen > right - left)
+                {
+                    minLen = right - left;
+                    startIdx = left;
+                }
+                
+                 char ch = s[left];
+            
+                 if(mp.find(ch) != mp.end()){
+                     mp[ch]++;
+                     
+                     if(mp[ch] > 0) counter++;
+                 }
+                 
+                ++left;
+            }
+        }
+        if(startIdx == -1) return "";
+        
+        return s.substr(startIdx, minLen);
     }
 };
