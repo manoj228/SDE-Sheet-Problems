@@ -37,23 +37,18 @@ Note that buying on day 2 and selling on day 1 is not allowed because you must b
 // so we got max dif for first price , here we need to check whether any value is greater than our ans or not
 // Time complexity : O(n)
 // Space complexity : O(1)
-
-   class Solution {
+class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-
-        int ans = 0;
         
-        // O (n) 
-        for(int i = 0;i<prices.size();i++){
-            int left = prices[i];
-            while(i<prices.size() && prices[i]>=left){
-                ans = max(prices[i]-left,ans);
-                i++;
-
-            }
-            i--;
-         }
-              return ans;
+        int mini = INT_MAX, maxProfit = 0;
+        
+        for(int i=0; i<prices.size(); i++)
+        {
+            mini = min(mini, prices[i]);
+            maxProfit = max(maxProfit, prices[i] - mini);
+        }
+        
+        return maxProfit;
     }
 };
