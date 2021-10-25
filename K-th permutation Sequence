@@ -25,7 +25,7 @@ Example 3:
 Input: n = 3, k = 1
 Output: "123"
 
-// Time complexity : O(n*n)
+// Time complexity : O(n)
 // space complexity : O(n)
 class Solution {
 public:
