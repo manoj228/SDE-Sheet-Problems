@@ -32,32 +32,38 @@ public:
    
     void nextPermutation(vector<int>& nums) {
        
-        int n = nums.size(), ind1, indx2;
+        int inv = -1, n = nums.size();
         
-        // O(n)
-        for(ind1 = n-2; ind1 >= 0; ind1--)
+        for(int i = 0; i < n-1; i++)
         {
-            if(nums[ind1] < nums[ind1+1])
-                break;
+            // check the last index of cur ele, which is less than next element
+            if(nums[i] < nums[i+1])
+                inv = i;
         }
         
-        if(ind1 < 0)
-            // O(n)
+        // then we reached last permutation
+        if(inv == -1)
+        {
+            // reverse whole array
             reverse(nums.begin(), nums.end());
+        }
+        
         else{
             
-            // O(n)
-            for(indx2 = n-1; indx2 >= 0; indx2--)
+            for(int i = nums.size()-1; i >= 0; i--)
             {
-                if(nums[ind1] < nums[indx2]) 
+                // check for element which is greater than inv element
+                if(nums[inv] < nums[i])
+                {
+                    swap(nums[inv], nums[i]);
                     break;
+                }
             }
-            swap(nums[ind1], nums[indx2]);
             
-            //O(n)
-            reverse(nums.begin() + ind1 + 1, nums.end());
+            // now reverse
+            reverse(nums.begin()+inv+1, nums.end());
+            
         }
-        
     }
 };
 
